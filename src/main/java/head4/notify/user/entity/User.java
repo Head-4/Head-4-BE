@@ -18,5 +18,13 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     Long id;
 
-    String password;
+    String email;
+
+    @Enumerated(EnumType.STRING)
+    RoleType roleType;
+
+    public User(String email, RoleType roleType) {
+        this.email = email;
+        this.roleType = roleType;
+    }
 }

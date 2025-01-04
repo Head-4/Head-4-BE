@@ -49,6 +49,7 @@ public class KakaoUtil {
 
         KakaoDto.OAuthToken oAuthToken = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        log.info(response.getBody());
 
         try {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
@@ -61,5 +62,32 @@ public class KakaoUtil {
     }
 
     // 발급 받은 액세스 토큰을 사용하여 카카오에서 사용자 정보 가져오기
+    public KakaoDto.UserInfo getUserInfo(String token) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", CONTENT_TYPE);
+        headers.add("Authorization", "Bearer " + token);
 
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        HttpEntity<LinkedMultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoRequest,
+                String.class);
+        System.out.println("response = " + response.getBody());
+
+        KakaoDto.UserInfo userInfo = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            userInfo = objectMapper.readValue(response.getBody(), KakaoDto.UserInfo.class);
+            log.info(userInfo.getKakao_account().getEmail());
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.JSON_PARSING_ERROR);
+        }
+
+        return userInfo;
+    }
 }
