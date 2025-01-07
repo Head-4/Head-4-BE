@@ -10,18 +10,19 @@ import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
-@FieldDefaults(level = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = IDENTITY)
-    Long id;
+    private Long id;
 
-    String email;
+    @Column(length = 100)
+    private String email;
 
+    @Column(length = 100)
     @Enumerated(EnumType.STRING)
-    RoleType roleType;
+    private RoleType roleType;
 
     public User(String email, RoleType roleType) {
         this.email = email;
