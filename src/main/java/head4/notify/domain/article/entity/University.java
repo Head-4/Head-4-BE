@@ -1,4 +1,4 @@
-package head4.notify.notification.entity;
+package head4.notify.domain.article.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,4 +25,9 @@ public class University {
     private String name;
 
     private Integer campus;
+
+    public University(String name, Integer campus) {
+        this.name = name;
+        this.campus = campus;
+    }
 }

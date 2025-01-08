@@ -2,12 +2,11 @@ package head4.notify.security.custom;
 
 import head4.notify.exceoption.CustomException;
 import head4.notify.exceoption.ErrorCode;
-import head4.notify.user.entity.User;
-import head4.notify.user.repository.UserRepository;
+import head4.notify.domain.user.entity.User;
+import head4.notify.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

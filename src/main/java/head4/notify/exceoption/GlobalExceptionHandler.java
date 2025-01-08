@@ -1,14 +1,19 @@
 package head4.notify.exceoption;
 
 import head4.notify.customResponse.ApiResponse;
+import head4.notify.oauth.controller.LoginController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(
+        annotations = {RestController.class},
+        basePackageClasses = {LoginController.class}
+)
 public class GlobalExceptionHandler {
     // 존재하지 않는 요청에 대한 예외
     @ExceptionHandler(value = {NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})

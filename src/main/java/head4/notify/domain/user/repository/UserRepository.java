@@ -1,6 +1,6 @@
-package head4.notify.user.repository;
+package head4.notify.domain.user.repository;
 
-import head4.notify.user.entity.User;
+import head4.notify.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 

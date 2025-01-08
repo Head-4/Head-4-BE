@@ -1,4 +1,4 @@
-package head4.notify.user.service;
+package head4.notify.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

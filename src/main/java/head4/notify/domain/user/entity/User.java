@@ -1,9 +1,8 @@
-package head4.notify.user.entity;
+package head4.notify.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;

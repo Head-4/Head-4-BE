@@ -1,4 +1,4 @@
-package head4.notify.user.entity;
+package head4.notify.domain.user.entity;
 
 import lombok.Getter;
 

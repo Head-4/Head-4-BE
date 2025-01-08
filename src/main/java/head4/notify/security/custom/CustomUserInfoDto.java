@@ -1,10 +1,8 @@
 package head4.notify.security.custom;
 
-import head4.notify.user.entity.RoleType;
+import head4.notify.domain.user.entity.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.management.relation.Role;
 
 @Getter
 @AllArgsConstructor

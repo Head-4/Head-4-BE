@@ -1,6 +1,6 @@
-package head4.notify.notification.entity;
+package head4.notify.domain.notification.entity;
 
-import head4.notify.notification.entity.embedded.NotifyId;
+import head4.notify.domain.article.entity.University;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

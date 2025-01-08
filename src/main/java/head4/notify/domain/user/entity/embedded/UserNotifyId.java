@@ -1,6 +1,5 @@
-package head4.notify.notification.entity.embedded;
+package head4.notify.domain.user.entity.embedded;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,9 +13,8 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotifyId implements Serializable {
-    private Long univId; // MapsId("univId") 로 매핑
+public class UserNotifyId implements Serializable {
+    private Long userId;
 
-    @Column(name = "keyword")
-    private String keyword;
+    private Long notifyId;
 }

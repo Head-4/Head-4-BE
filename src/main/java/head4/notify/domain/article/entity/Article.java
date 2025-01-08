@@ -1,7 +1,6 @@
-package head4.notify.notification.entity;
+package head4.notify.domain.article.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
