@@ -25,5 +25,12 @@ public class Article {
 
     private String url;
 
-    private Integer num;
+    private String num;
+
+    public Article(University university, String title, String url, String num) {
+        this.university = university;
+        this.title = title;
+        this.url = url;
+        this.num = num;
+    }
 }

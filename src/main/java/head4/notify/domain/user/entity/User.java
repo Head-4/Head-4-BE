@@ -1,9 +1,11 @@
 package head4.notify.domain.user.entity;
 
+import head4.notify.domain.article.entity.University;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -16,6 +18,9 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(name = "univ_id")
+    private Long univId;
+
     @Column(length = 100)
     private String email;
 
@@ -26,5 +31,9 @@ public class User {
     public User(String email, RoleType roleType) {
         this.email = email;
         this.roleType = roleType;
+    }
+
+    public void setUnivId(Long univId) {
+        this.univId = univId;
     }
 }

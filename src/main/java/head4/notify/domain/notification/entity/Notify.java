@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -32,10 +34,13 @@ public class Notify {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "univ_id")
-    private University university;
+    private Long univId;
 
     @Column(length = 100)
     private String keyword;
+
+    public Notify(Long univId, String keyword) {
+        this.univId = univId;
+        this.keyword = keyword;
+    }
 }
