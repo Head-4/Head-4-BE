@@ -6,8 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface NotifyRepository extends JpaRepository<Notify, NotifyId> {
 
     boolean existsByUnivIdAndKeyword(@Param("univId") Long univId,
                                      @Param("keyword") String keyword);
+
+    Optional<Notify> findNotifyByUnivIdAndKeyword(@Param("univId") Long univId,
+                                                  @Param("keyword") String keyword);
 }

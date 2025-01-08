@@ -22,7 +22,7 @@ public class ArticleService {
     private final UniversityRepository universityRepository;
 
     @Transactional
-    public void create(CreateArticleRequest request) {
+    public List<Long> create(CreateArticleRequest request) {
         String univName = request.getSchool();
 
         // 해당 대학교(캠퍼스 포함) 엔티티 가져오기
@@ -42,5 +42,7 @@ public class ArticleService {
         }
 
         articles = articleRepository.saveAll(articles);
+
+        return articles.stream().map(article -> article.getId()).toList();
     }
 }

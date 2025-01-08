@@ -2,6 +2,9 @@ package head4.notify.init;
 
 import head4.notify.domain.article.entity.University;
 import head4.notify.domain.article.repository.UniversityRepository;
+import head4.notify.domain.notification.entity.Notify;
+import head4.notify.domain.notification.repository.NotifyRepository;
+import head4.notify.domain.notification.service.NotifyService;
 import head4.notify.domain.user.entity.RoleType;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.repository.UserRepository;
@@ -17,7 +20,10 @@ import java.util.List;
 public class DataInit {
 
     private final UserRepository userRepository;
+
     private final UniversityRepository universityRepository;
+
+    private final NotifyRepository notifyRepository;
 
     @PostConstruct
     public void init() {
@@ -46,6 +52,18 @@ public class DataInit {
             users.get(i).setUnivId(universities.get(i).getId());
         }
 
-        userRepository.saveAll(users);
+        users = userRepository.saveAll(users);
+
+        // 알림 추가
+        String[] keywords = {"장학", "근로", "취업"};
+        List<Notify> notifies = new ArrayList<>();
+
+        for (User user : users) {
+            for (String keyword : keywords) {
+                notifies.add(new Notify(user.getUnivId(), keyword));
+            }
+        }
+
+        notifyRepository.saveAll(notifies);
     }
 }
