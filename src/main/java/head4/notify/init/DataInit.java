@@ -19,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataInit {
 
+    private final NotifyService notifyService;
+
     private final UserRepository userRepository;
 
     private final UniversityRepository universityRepository;
@@ -61,14 +63,11 @@ public class DataInit {
 
         // 알림 추가
         String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
-        List<Notify> notifies = new ArrayList<>();
 
-        for (University university : universities) {
-            for (String keyword : keywords) {
-                notifies.add(new Notify(university.getId(), keyword));
-            }
+        for (String keyword : keywords) {
+            users.forEach(user -> {
+                notifyService.create(user.getId(), keyword);
+            });
         }
-
-        notifyRepository.saveAll(notifies);
     }
 }

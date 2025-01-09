@@ -34,7 +34,7 @@ public class User {
     public User(String email, RoleType roleType) {
         this.email = email;
         this.roleType = roleType;
-        this.fcmToken = null;
+        this.fcmToken = "token";
     }
 
     public void setUnivId(Long univId) {

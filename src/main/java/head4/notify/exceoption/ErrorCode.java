@@ -17,8 +17,11 @@ public enum ErrorCode {
     // 500 Internal Server Error
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     // JSON 파싱 오류
-    JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다.");
-
+    JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
+    // firebase 초기화 오류
+    FIREBASE_CONFIG_ERROR(50090, HttpStatus.INTERNAL_SERVER_ERROR, "firebase 초기화 오류입니다."),
+    // firebase message 생성 오류
+    FIREBASE_MESSAGE_ERROR(50091, HttpStatus.INTERNAL_SERVER_ERROR, "firebase message 생성 오류입니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

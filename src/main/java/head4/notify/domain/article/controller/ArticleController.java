@@ -1,16 +1,17 @@
 package head4.notify.domain.article.controller;
 
 import head4.notify.domain.article.dto.CreateArticleRequest;
+import head4.notify.domain.notification.entity.dto.NotifyDetail;
 import head4.notify.domain.notification.service.TotalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,12 @@ public class ArticleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
     })
-    public void create(@RequestBody CreateArticleRequest request) {
-        totalService.createTotal(request);
+    public List<NotifyDetail> create(@RequestBody CreateArticleRequest request) {
+        return totalService.createTotal(request);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
     }
 }

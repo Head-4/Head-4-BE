@@ -1,6 +1,7 @@
 package head4.notify.domain.notification.repository;
 
 import head4.notify.domain.notification.entity.Notify;
+import head4.notify.domain.notification.entity.dto.NotifyDetail;
 import head4.notify.domain.notification.entity.dto.NotifyIdProjection;
 import head4.notify.domain.notification.entity.embedded.NotifyArticleId;
 import head4.notify.domain.notification.entity.embedded.NotifyId;
@@ -20,12 +21,15 @@ public interface NotifyRepository extends JpaRepository<Notify, NotifyId> {
     Optional<Notify> findNotifyByUnivIdAndKeyword(@Param("univId") Long univId,
                                                   @Param("keyword") String keyword);
 
-    // 여기서 사용자까지 조회하면 되지 않을까
-    // 공지 여러개에 동일 키워드가 있으면 알림Id가 중복으로 들어감
-    @Query("select n.id " +
+    // 크롤링한 공지 식별자(articleIds)
+    // 해당 대학교 사용자가 등록 한 키워드가 포함된 공지와 사용자
+    @Query("select new head4.notify.domain.notification.entity.dto.NotifyDetail(" +
+            "u.id, u.fcmToken, a.title, a.url, n.keyword) " +
             "from Notify n " +
-            "join Article a on a.univId = n.univId " +
+            "left join Article a on a.univId = n.univId " +
+            "left join UserNotify un on un.userNotifyId.notifyId = n.id " +
+            "left join User u on un.userNotifyId.userId = u.id " +
             "where a.id in (:articleIds) " +
             "and a.title like concat('%', n.keyword, '%') ")
-    Set<Long> findMatchingNotify(@Param("articleIds") List<Long> articleIds);
+    List<NotifyDetail> findMatchingNotify(@Param("articleIds") List<Long> articleIds);
 }
