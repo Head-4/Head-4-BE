@@ -43,14 +43,15 @@ public class ArticleService {
                             detail.getArticle_url(),
                             detail.getArticle_num()));
                 }
-                continue;
+            }
+            else {
+                articles.add(new Article(
+                        universities.get(detail.getCampus()).getId(),
+                        detail.getTitle(),
+                        detail.getArticle_url(),
+                        detail.getArticle_num()));
             }
 
-            articles.add(new Article(
-                    universities.get(detail.getCampus()).getId(),
-                    detail.getTitle(),
-                    detail.getArticle_url(),
-                    detail.getArticle_num()));
         }
 
         articles = articleRepository.saveAll(articles);

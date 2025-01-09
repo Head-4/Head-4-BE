@@ -28,7 +28,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @Column(length = 100)
     private String fcmToken;
 
     public User(String email, RoleType roleType) {
@@ -39,5 +38,9 @@ public class User {
 
     public void setUnivId(Long univId) {
         this.univId = univId;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

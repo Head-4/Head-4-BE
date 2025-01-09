@@ -7,6 +7,7 @@ import head4.notify.exceoption.CustomException;
 import head4.notify.exceoption.ErrorCode;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileInputStream;
 
@@ -16,7 +17,7 @@ public class FirebaseConfig {
     public void initFirebase() {
         try {
             FileInputStream serviceAccount =
-                    new FileInputStream("firebaseKey.json");
+                    new FileInputStream("src/main/resources/firebaseKey.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))

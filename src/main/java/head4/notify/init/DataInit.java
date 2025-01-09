@@ -58,7 +58,7 @@ public class DataInit {
         for(int i = emails.length; i < users.size(); i++) {
             users.get(i).setUnivId(universities.get(5).getId());
         }
-
+        users.get(3).setFcmToken("cZ6QkF3UXvaLwT1cgMUYa0:APA91bE-N176HWR58YjBfjATLYS2o056_9RrMHseJh-KPoZpT2L8TaRfUqYL4xgnCBRWQSRKHUsh6_IFClBQojgeotEApHqTBYicW0ILLVso6R-NTx04-e8");
         users = userRepository.saveAll(users);
 
         // 알림 추가
