@@ -33,9 +33,10 @@ public class ArticleService {
         List<ArticleDetail> articleDetails = request.getArticleDetails();
 
         // TODO: try catch 로 잘못된 인덱스 오류 체크 추가
+        // TODO: 캠퍼스 분류 다시 부탁하기
         for (ArticleDetail detail : articleDetails) {
             articles.add(new Article(
-                    universities.get(detail.getCampus()),
+                    universities.get(detail.getCampus()).getId(),
                     detail.getTitle(),
                     detail.getArticle_url(),
                     detail.getArticle_num()));

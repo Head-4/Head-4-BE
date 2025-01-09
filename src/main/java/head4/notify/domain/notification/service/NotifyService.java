@@ -1,6 +1,8 @@
 package head4.notify.domain.notification.service;
 
 import head4.notify.domain.notification.entity.Notify;
+import head4.notify.domain.notification.entity.dto.NotifyIdProjection;
+import head4.notify.domain.notification.entity.embedded.NotifyArticleId;
 import head4.notify.domain.notification.repository.NotifyRepository;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.entity.UserNotify;
@@ -10,6 +12,9 @@ import head4.notify.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +39,9 @@ public class NotifyService {
         userNotifyRepository.save(new UserNotify(userNotifyId));
     }
 
-
+    // 크롤링한 공지 제목에 해당 대학교에 등록된 키워드가 포함된 알림 식별자 조회
+    @Transactional
+    public Set<Long> matchNotify(List<Long> articleIds) {
+         return notifyRepository.findMatchingNotify(articleIds);
+    }
 }

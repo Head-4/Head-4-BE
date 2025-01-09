@@ -17,9 +17,8 @@ public class Article {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "univ_id")
-    private University university;
+    @Column(name = "univId")
+    private Long univId;
 
     private String title;
 
@@ -27,8 +26,8 @@ public class Article {
 
     private String num;
 
-    public Article(University university, String title, String url, String num) {
-        this.university = university;
+    public Article(Long univId, String title, String url, String num) {
+        this.univId = univId;
         this.title = title;
         this.url = url;
         this.num = num;

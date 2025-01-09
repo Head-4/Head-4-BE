@@ -1,6 +1,7 @@
 package head4.notify.domain.article.controller;
 
 import head4.notify.domain.article.dto.CreateArticleRequest;
+import head4.notify.domain.notification.service.TotalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/article")
 public class ArticleController {
 
+    private final TotalService totalService;
+
     @PostMapping("/create")
     @Operation(summary = "공지 생성", description = "크롤링한 공지를 전송하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
     })
     public void create(@RequestBody CreateArticleRequest request) {
-
+        totalService.createTotal(request);
     }
 }
