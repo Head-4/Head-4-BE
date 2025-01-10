@@ -17,12 +17,15 @@ import head4.notify.domain.user.service.UserService;
 import head4.notify.exceoption.CustomException;
 import head4.notify.exceoption.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -63,8 +66,6 @@ public class NotifyService {
                             )
                             .setToken(detail.getFcmToken())
                             .build());
-
-            System.out.println("message = " + message);
         } catch (Exception e) {
             throw new CustomException(ErrorCode.FIREBASE_MESSAGE_ERROR);
         }
