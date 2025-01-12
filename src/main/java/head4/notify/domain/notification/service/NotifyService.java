@@ -20,9 +20,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StopWatch;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -55,19 +58,41 @@ public class NotifyService {
     }
 
     // firebase 푸시 메세지 전송
-    public void sendPushMessage(NotifyDetail detail) {
-        try {
-            String message = FirebaseMessaging.getInstance().send(
+    public void sendPushMessage(List<NotifyDetail> details) {
+        // TODO: sendAll 은 최대 500개의 메세지 처리 가능
+        int count = 0;
+        final int CHUNK_SIZE = 500;
+
+        List<Message> messages = new ArrayList<>();
+
+        for (NotifyDetail detail : details) {
+            //if(detail.getFcmToken().equals("token")) continue;
+
+            messages.add(
                     Message.builder()
                             .setNotification(Notification.builder()
-                                    .setTitle(detail.getKeyword() + "새로운 공지")
+                                    .setTitle(detail.getKeyword() + " 새로운 공지")
                                     .setBody(detail.getTitle())
                                     .build()
                             )
+                            .putData("url", detail.getUrl())
+                            .putData("name", "공지 보기")
                             .setToken(detail.getFcmToken())
-                            .build());
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.FIREBASE_MESSAGE_ERROR);
+                            .build()
+            );
+
+            // 500개씩 메세지 전송
+            if(messages.size() % CHUNK_SIZE == 0) {
+                sendFirebase(messages);
+                messages.clear();
+            }
         }
+
+        // 500개씩 나눠서 보낸 후 나머지 메세지들
+        sendFirebase(messages);
+    }
+
+    private void sendFirebase(List<Message> messages) {
+        FirebaseMessaging.getInstance().sendEachAsync(messages);
     }
 }
