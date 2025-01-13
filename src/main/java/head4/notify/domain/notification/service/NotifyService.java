@@ -5,6 +5,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import head4.notify.domain.notification.entity.Notify;
+import head4.notify.domain.notification.entity.dto.AddKeywordsRequest;
 import head4.notify.domain.notification.entity.dto.NotifyDetail;
 import head4.notify.domain.notification.entity.dto.NotifyIdProjection;
 import head4.notify.domain.notification.entity.embedded.NotifyArticleId;
@@ -57,17 +58,34 @@ public class NotifyService {
          return notifyRepository.findMatchingNotify(articleIds);
     }
 
+    @Transactional
+    public void addKeywords(Long userId, AddKeywordsRequest request) {
+        User user = userService.getUserById(userId);
+
+        List<String> keywords = request.getKeywords();
+        List<UserNotify> userNotifies = new ArrayList<>();
+
+        // 사용자의 대학교에 해당 키워드로 등록된 알림이 있으면 해당 알림 객체 반환
+        // 등록되지 않았으면 새로운 객체 생성 후 저장
+        keywords.forEach(keyword -> {
+            Notify notify = notifyRepository.findNotifyByUnivIdAndKeyword(user.getUnivId(), keyword)
+                    .orElseGet(() -> notifyRepository.save(new Notify(user.getUnivId(), keyword)));
+
+            UserNotifyId userNotifyId = new UserNotifyId(userId, notify.getId());
+            userNotifies.add(new UserNotify(userNotifyId));
+        });
+
+        userNotifyRepository.saveAll(userNotifies);
+    }
+
     // firebase 푸시 메세지 전송
     public void sendPushMessage(List<NotifyDetail> details) {
         // TODO: sendAll 은 최대 500개의 메세지 처리 가능
-        int count = 0;
         final int CHUNK_SIZE = 500;
 
         List<Message> messages = new ArrayList<>();
 
         for (NotifyDetail detail : details) {
-            //if(detail.getFcmToken().equals("token")) continue;
-
             messages.add(
                     Message.builder()
                             .setNotification(Notification.builder()
@@ -76,7 +94,6 @@ public class NotifyService {
                                     .build()
                             )
                             .putData("url", detail.getUrl())
-                            .putData("name", "공지 보기")
                             .setToken(detail.getFcmToken())
                             .build()
             );
@@ -89,7 +106,9 @@ public class NotifyService {
         }
 
         // 500개씩 나눠서 보낸 후 나머지 메세지들
-        sendFirebase(messages);
+        if(!messages.isEmpty()) {
+            sendFirebase(messages);
+        }
     }
 
     private void sendFirebase(List<Message> messages) {
