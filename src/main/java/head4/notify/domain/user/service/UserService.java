@@ -1,5 +1,7 @@
 package head4.notify.domain.user.service;
 
+import head4.notify.domain.article.repository.UniversityRepository;
+import head4.notify.domain.article.service.UniversityService;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.repository.UserRepository;
@@ -17,15 +19,18 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    private final UserNotifyRepository userNotifyRepository;
+    private final UniversityService universityService;
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    // 푸시 알림을 보낼 사용자 알아내기
-    public void getNotifyInfo(List<Long> notifyIds) {
-        userNotifyRepository.find(notifyIds);
+    @Transactional
+    public void patchUnivId(Long userId, String univName) {
+        User user = getUserById(userId);
+        Integer univId = universityService.getUnivId(univName);
+
+        user.setUnivId(univId);
     }
 }

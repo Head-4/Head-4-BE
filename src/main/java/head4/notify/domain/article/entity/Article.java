@@ -19,7 +19,7 @@ public class Article extends BaseTime {
     private Long id;
 
     @Column(name = "univId")
-    private int univId;
+    private Integer univId;
 
     private String title;
 
@@ -27,7 +27,7 @@ public class Article extends BaseTime {
 
     private String num;
 
-    public Article(int univId, String title, String url, String num) {
+    public Article(Integer univId, String title, String url, String num) {
         this.univId = univId;
         this.title = title;
         this.url = url;

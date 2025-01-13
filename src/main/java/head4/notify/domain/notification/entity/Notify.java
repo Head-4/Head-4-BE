@@ -26,12 +26,12 @@ public class Notify {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private int univId;
+    private Integer univId;
 
     @Column(length = 100)
     private String keyword;
 
-    public Notify(int univId, String keyword) {
+    public Notify(Integer univId, String keyword) {
         this.univId = univId;
         this.keyword = keyword;
     }
