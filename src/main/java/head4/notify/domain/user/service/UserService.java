@@ -40,4 +40,10 @@ public class UserService {
         user.setFcmToken(token);
         user.setNotifyAllow(true);
     }
+
+    @Transactional
+    public void patchAllow(Long userId, Boolean allow) {
+        User user = getUserById(userId);
+        user.setNotifyAllow(allow);
+    }
 }

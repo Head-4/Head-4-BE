@@ -29,4 +29,12 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<String> patchToken(String token);
+
+    @Operation(summary = "[온보딩, 설정] 알림 허용 설정", description = "사용자의 알림 허용 여부를 변경하는 API")
+    @Parameter(name = "allow", description = "사용자 알림 허용 여부", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> patchAllow(Boolean allow);
 }

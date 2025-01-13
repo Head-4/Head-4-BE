@@ -30,4 +30,12 @@ public class UserController implements UserControllerDocs {
         userService.patchFcmToken(1L, token);
         return BaseResponse.ok("success");
     }
+
+    @PatchMapping("/notify/{allow}")
+    public BaseResponse<String> patchAllow(@PathVariable("allow") Boolean allow) {
+        userService.patchAllow(1L, allow);
+        return BaseResponse.ok("success");
+    }
+
+
 }
