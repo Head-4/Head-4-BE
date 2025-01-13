@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Notify API",  description = "알림 관련 기능 API")
 public interface NotifyControllerDocs {
-    @Operation(summary = "키워드 추가", description = "사용자가 지정한 키워드들을 등록하는 API")
+    @Operation(summary = "[온보딩, 설정] 키워드 추가", description = "사용자가 지정한 키워드들을 등록하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))

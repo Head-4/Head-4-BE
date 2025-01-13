@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "User API",  description = "사용자 관련 기능 API")
 public interface UserControllerDocs {
-    @Operation(summary = "대학교 저장", description = "사용자가 선택한 대학 정보를 저장하는 API")
+    @Operation(summary = "[온보딩] 대학교 저장", description = "사용자가 선택한 대학 정보를 저장하는 API")
     @Parameter(name = "name", description = "대학교 이름", in = ParameterIn.PATH)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -21,4 +21,12 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40402", description = "대학교 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<String> patchUniv(String name);
+
+    @Operation(summary = "[온보딩] fcm token 저장", description = "사용자가 알림을 수락하면 fcm token을 저장하는 API")
+    @Parameter(name = "token", description = "사용자 fcm token", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> patchToken(String token);
 }

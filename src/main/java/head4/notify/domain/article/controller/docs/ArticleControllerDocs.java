@@ -17,13 +17,13 @@ import java.util.List;
 
 @Tag(name = "Article API",  description = "공지사항 관련 기능 API")
 public interface ArticleControllerDocs {
-    @Operation(summary = "공지 생성", description = "크롤링한 공지를 전송하는 API")
+    @Operation(summary = "[크롤링] 공지 생성", description = "크롤링한 공지를 전송하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
     })
     public List<NotifyDetail> create(CreateArticleRequest request);
 
-    @Operation(summary = "공지 페이징", description = "공지 10개 단위로 페이징 하는 API")
+    @Operation(summary = "[메인] 공지 페이징", description = "공지 10개 단위로 페이징 하는 API")
     @Parameter(name = "cursor", description = "보내준 마지막 공지의 id", in = ParameterIn.PATH)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ArticlePage.class))),

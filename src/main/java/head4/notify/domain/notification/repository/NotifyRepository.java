@@ -30,6 +30,7 @@ public interface NotifyRepository extends JpaRepository<Notify, NotifyId> {
             "left join UserNotify un on un.userNotifyId.notifyId = n.id " +
             "left join User u on un.userNotifyId.userId = u.id " +
             "where a.id in (:articleIds) " +
+            "and u.notifyAllow = true " +
             "and a.title like concat('%', n.keyword, '%') ")
     List<NotifyDetail> findMatchingNotify(@Param("articleIds") List<Long> articleIds);
 }

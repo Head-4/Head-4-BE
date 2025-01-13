@@ -33,4 +33,11 @@ public class UserService {
 
         user.setUnivId(univId);
     }
+
+    @Transactional
+    public void patchFcmToken(Long userId, String token) {
+        User user = getUserById(userId);
+        user.setFcmToken(token);
+        user.setNotifyAllow(true);
+    }
 }

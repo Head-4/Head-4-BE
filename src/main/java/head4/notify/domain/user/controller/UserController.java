@@ -23,4 +23,11 @@ public class UserController implements UserControllerDocs {
         userService.patchUnivId(1L, name);
         return BaseResponse.ok("success");
     }
+
+    //TODO: 사용자 fcm token 받기
+    @PatchMapping("/fcm/{token}")
+    public BaseResponse<String> patchToken(@PathVariable("token") String token) {
+        userService.patchFcmToken(1L, token);
+        return BaseResponse.ok("success");
+    }
 }

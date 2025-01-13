@@ -30,10 +30,13 @@ public class User {
 
     private String fcmToken;
 
+    private Boolean notifyAllow;
+
     public User(String email, RoleType roleType) {
         this.email = email;
         this.roleType = roleType;
-        this.fcmToken = "token";
+        this.fcmToken = null;
+        this.notifyAllow = false;
     }
 
     public void setUnivId(Integer univId) {
@@ -43,4 +46,6 @@ public class User {
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
+
+    public void setNotifyAllow(Boolean notifyAllow) { this.notifyAllow = notifyAllow; };
 }
