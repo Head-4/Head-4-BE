@@ -1,5 +1,6 @@
 package head4.notify.domain.article.entity;
 
+import head4.notify.customResponse.BaseTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +12,14 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Article {
+public class Article extends BaseTime {
     @Id
     @Column(name = "article_id")
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "univId")
-    private Long univId;
+    private int univId;
 
     private String title;
 
@@ -26,7 +27,7 @@ public class Article {
 
     private String num;
 
-    public Article(Long univId, String title, String url, String num) {
+    public Article(int univId, String title, String url, String num) {
         this.univId = univId;
         this.title = title;
         this.url = url;

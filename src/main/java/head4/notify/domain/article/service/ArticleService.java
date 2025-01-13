@@ -1,12 +1,17 @@
 package head4.notify.domain.article.service;
 
 import head4.notify.domain.article.dto.ArticleDetail;
+import head4.notify.domain.article.dto.ArticleInfo;
+import head4.notify.domain.article.dto.ArticlePage;
 import head4.notify.domain.article.dto.CreateArticleRequest;
 import head4.notify.domain.article.entity.Article;
 import head4.notify.domain.article.entity.University;
 import head4.notify.domain.article.repository.ArticleRepository;
 import head4.notify.domain.article.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +40,7 @@ public class ArticleService {
         // TODO: try catch 로 잘못된 인덱스 오류 체크 추가
         // 캠퍼스가 1 ~ 이면 공통공지도 알림으로 찾는 로직
         for (ArticleDetail detail : articleDetails) {
-            if(universities.size() > 1 && detail.getCampus().equals(0)) {
+            if(universities.size() > 1 && detail.getCampus() == 0) {
                 for(int i = 1; i < universities.size(); i++) {
                     articles.add(new Article(
                             universities.get(i).getId(),
@@ -57,5 +62,23 @@ public class ArticleService {
         articles = articleRepository.saveAll(articles);
 
         return articles.stream().map(article -> article.getId()).toList();
+    }
+
+    // TODO: 10개 단위로 커서 페이징 구현
+    public ArticlePage getArticleList(Long cursor, int univId) {
+        PageRequest pageRequest =
+                PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<ArticleInfo> page;
+
+        if(cursor == 0) {
+            page = articleRepository.getArticleList(univId, pageRequest);
+        } else {
+            page = articleRepository.getArticleList(cursor, univId, pageRequest);
+        }
+
+        List<ArticleInfo> articles = page.getContent();
+
+        return new ArticlePage(articles.get(articles.size() - 1).getId(), page.hasNext(), articles);
     }
 }

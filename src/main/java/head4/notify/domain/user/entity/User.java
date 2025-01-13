@@ -19,7 +19,7 @@ public class User {
     private Long id;
 
     @Column(name = "univ_id")
-    private Long univId;
+    private int univId;
 
     @Column(length = 100)
     private String email;
@@ -36,7 +36,7 @@ public class User {
         this.fcmToken = "token";
     }
 
-    public void setUnivId(Long univId) {
+    public void setUnivId(int univId) {
         this.univId = univId;
     }
 

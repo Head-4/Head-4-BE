@@ -6,10 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -19,14 +17,14 @@ public class University {
     @Id
     @Column(name = "univ_id")
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(length = 100)
     private String name;
 
-    private Integer campus;
+    private int campus;
 
-    public University(String name, Integer campus) {
+    public University(String name, int campus) {
         this.name = name;
         this.campus = campus;
     }

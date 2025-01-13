@@ -15,10 +15,10 @@ import java.util.Set;
 
 public interface NotifyRepository extends JpaRepository<Notify, NotifyId> {
 
-    boolean existsByUnivIdAndKeyword(@Param("univId") Long univId,
+    boolean existsByUnivIdAndKeyword(@Param("univId") int univId,
                                      @Param("keyword") String keyword);
 
-    Optional<Notify> findNotifyByUnivIdAndKeyword(@Param("univId") Long univId,
+    Optional<Notify> findNotifyByUnivIdAndKeyword(@Param("univId") int univId,
                                                   @Param("keyword") String keyword);
 
     // 크롤링한 공지 식별자(articleIds)

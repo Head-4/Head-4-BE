@@ -15,14 +15,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Notify {
-//    @EmbeddedId
-//    private NotifyId id;
-//
-//    @MapsId("univId")
-//    @ManyToOne
-//    @JoinColumn(name = "univ_id")
-//    private University university;
-
     /**
      * 조회하는 방법
      * 1. notifyId = new Notify(univId, keyword) 를 만든다.
@@ -34,12 +26,12 @@ public class Notify {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private Long univId;
+    private int univId;
 
     @Column(length = 100)
     private String keyword;
 
-    public Notify(Long univId, String keyword) {
+    public Notify(int univId, String keyword) {
         this.univId = univId;
         this.keyword = keyword;
     }

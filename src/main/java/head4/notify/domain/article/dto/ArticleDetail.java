@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Schema(description = "공지 세부 정보")
 public class ArticleDetail {
-    private Integer campus;
+    private int campus;
 
     private String title;
 
