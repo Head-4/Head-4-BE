@@ -1,6 +1,7 @@
 package head4.notify.domain.notification.controller;
 
 import head4.notify.customResponse.BaseResponse;
+import head4.notify.domain.notification.controller.docs.NotifyControllerDocs;
 import head4.notify.domain.notification.entity.dto.AddKeywordsRequest;
 import head4.notify.domain.notification.entity.dto.NotifyCreateRequest;
 import head4.notify.domain.notification.service.NotifyService;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notify")
-@Tag(name = "Notify API",  description = "알림 관련 기능 API")
-public class NotifyController {
+
+public class NotifyController implements NotifyControllerDocs {
 
     private final NotifyService notifyService;
 
@@ -32,10 +33,6 @@ public class NotifyController {
 
     // TODO: 공지 키워드 리스트 형식으로 받기
     @PostMapping("/add/keywords")
-    @Operation(summary = "키워드 추가", description = "사용자가 지정한 키워드들을 등록하는 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
-    })
     public BaseResponse<String> addKeywords(@RequestBody AddKeywordsRequest request) {
         notifyService.addKeywords(1L, request);
         return BaseResponse.ok("success");
