@@ -2,13 +2,12 @@ package head4.notify.domain.user.controller;
 
 import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.user.controller.docs.UserControllerDocs;
+import head4.notify.domain.user.dto.PushLogPage;
+import head4.notify.domain.user.service.PushDetailService;
 import head4.notify.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController implements UserControllerDocs {
 
     private final UserService userService;
+
+    private final PushDetailService pushDetailService;
 
     // TODO: 대학교 정보 저장
     @PatchMapping("/univ/{name}")
@@ -37,5 +38,11 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok("success");
     }
 
+    // TODO: 사용자가 받은 알림 목록 페이징 구현
+    @GetMapping("/notify/log/{cursor}")
+    public BaseResponse<PushLogPage> showPushLogs(@PathVariable("cursor") Long cursor) {
+        PushLogPage page = pushDetailService.getArticleList(cursor, 1L);
+        return BaseResponse.ok(page);
+    }
 
 }

@@ -3,12 +3,16 @@ package head4.notify.domain.user.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
-public class PushDetail {
-    private Long userId;
+public class PushLog {
+    private Long pushId;
 
-    private String fcmToken;
+    private LocalDateTime createdDate;
+
+    private String keyword;
 
     private String title;
 
