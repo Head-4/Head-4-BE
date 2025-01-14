@@ -4,6 +4,7 @@ import head4.notify.domain.article.repository.UniversityRepository;
 import head4.notify.domain.article.service.UniversityService;
 import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.domain.user.entity.User;
+import head4.notify.domain.user.entity.UserNotify;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.repository.UserRepository;
 import head4.notify.exceoption.CustomException;
@@ -52,5 +53,13 @@ public class UserService {
 
     public List<UserKeywordsRes> getKeywords(Long userId) {
         return userNotifyRepository.findUserKeywords(userId);
+    }
+
+    @Transactional
+    public void deleteKeyword(Long userId, Long notifyId) {
+        UserNotify userNotify = userNotifyRepository.findByNotifyIdAndUserId(userId, notifyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.KEYWORD_NOT_FOUND));
+
+        userNotifyRepository.delete(userNotify);
     }
 }

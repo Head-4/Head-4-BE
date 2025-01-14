@@ -61,4 +61,11 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<List<UserKeywordsRes>> userKeywords();
+
+    @Operation(summary = "[키워드] 사용자 키워드 삭제", description = "사용자가 선택한 키워드를 삭제하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> deleteKeyword(Long notifyId);
 }

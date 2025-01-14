@@ -14,6 +14,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(40401, HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
     // 존재하지 않는 대학교 이름
     UNIV_NOT_FOUND(40402, HttpStatus.NOT_FOUND, "존재하지 않는 대학교 이름입니다."),
+    KEYWORD_NOT_FOUND(40403, HttpStatus.NOT_FOUND, "존재하지 않는 키워드입니다."),
     // Duplicate Data Error
     DUPLICATE_DATA_ERROR(40900, HttpStatus.CONFLICT, "중복 데이터 오류입니다."),
     // 500 Internal Server Error

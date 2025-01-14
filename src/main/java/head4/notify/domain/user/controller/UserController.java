@@ -54,4 +54,10 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userKeywords);
     }
 
+    // TODO: 사용자가 추가한 키워드 삭제
+    @DeleteMapping("/delete/keyword/{notifyId}")
+    public BaseResponse<String> deleteKeyword(@PathVariable("notifyId") Long notifyId) {
+        userService.deleteKeyword(1L, notifyId);
+        return BaseResponse.ok("success");
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserNotifyRepository extends JpaRepository<UserNotify, UserNotifyId> {
 
@@ -22,4 +23,10 @@ public interface UserNotifyRepository extends JpaRepository<UserNotify, UserNoti
             "left join Notify n on un.userNotifyId.notifyId = n.id " +
             "where un.userNotifyId.userId = :userId")
     List<UserKeywordsRes> findUserKeywords(@Param("userId") Long userId);
+
+    @Query("select un from UserNotify un " +
+            "where un.userNotifyId.userId = :userId " +
+            "and un.userNotifyId.notifyId = :notifyId")
+    Optional<UserNotify> findByNotifyIdAndUserId(@Param("userId") Long userId,
+                                                 @Param("notifyId") Long notifyId);
 }
