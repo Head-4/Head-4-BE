@@ -3,7 +3,7 @@ package head4.notify.domain.article.controller.docs;
 import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.article.dto.ArticlePage;
 import head4.notify.domain.article.dto.CreateArticleRequest;
-import head4.notify.domain.notification.entity.dto.NotifyDetail;
+import head4.notify.domain.notification.entity.dto.PushMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,7 +21,7 @@ public interface ArticleControllerDocs {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
     })
-    public List<NotifyDetail> create(CreateArticleRequest request);
+    public List<PushMessage> create(CreateArticleRequest request);
 
     @Operation(summary = "[메인] 공지 페이징", description = "공지 10개 단위로 페이징 하는 API")
     @Parameter(name = "cursor", description = "보내준 마지막 공지의 id", in = ParameterIn.PATH)

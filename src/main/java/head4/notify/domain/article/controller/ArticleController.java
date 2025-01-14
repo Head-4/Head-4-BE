@@ -2,21 +2,12 @@ package head4.notify.domain.article.controller;
 
 import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.article.controller.docs.ArticleControllerDocs;
-import head4.notify.domain.article.dto.ArticleInfo;
 import head4.notify.domain.article.dto.ArticlePage;
 import head4.notify.domain.article.dto.CreateArticleRequest;
 import head4.notify.domain.article.service.ArticleService;
-import head4.notify.domain.notification.entity.dto.NotifyDetail;
+import head4.notify.domain.notification.entity.dto.PushMessage;
 import head4.notify.domain.notification.service.TotalService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +22,7 @@ public class ArticleController implements ArticleControllerDocs {
     private final TotalService totalService;
 
     @PostMapping("/create")
-    public List<NotifyDetail> create(@RequestBody CreateArticleRequest request) {
+    public List<PushMessage> create(@RequestBody CreateArticleRequest request) {
         return totalService.createTotal(request);
     }
 

@@ -1,33 +1,24 @@
 package head4.notify.domain.notification.service;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import head4.notify.domain.notification.entity.Notify;
 import head4.notify.domain.notification.entity.dto.AddKeywordsRequest;
-import head4.notify.domain.notification.entity.dto.NotifyDetail;
-import head4.notify.domain.notification.entity.dto.NotifyIdProjection;
-import head4.notify.domain.notification.entity.embedded.NotifyArticleId;
+import head4.notify.domain.notification.entity.dto.PushMessage;
 import head4.notify.domain.notification.repository.NotifyRepository;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.entity.UserNotify;
 import head4.notify.domain.user.entity.embedded.UserNotifyId;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.service.UserService;
-import head4.notify.exceoption.CustomException;
-import head4.notify.exceoption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -54,7 +45,7 @@ public class NotifyService {
     }
 
     // 크롤링한 공지 제목에 해당 대학교에 등록된 키워드가 포함된 알림 식별자 조회
-    public List<NotifyDetail> matchNotify(List<Long> articleIds) {
+    public List<PushMessage> matchNotify(List<Long> articleIds) {
          return notifyRepository.findMatchingNotify(articleIds);
     }
 
@@ -79,22 +70,22 @@ public class NotifyService {
     }
 
     // firebase 푸시 메세지 전송
-    public void sendPushMessage(List<NotifyDetail> details) {
+    public void sendPushMessage(List<PushMessage> pushMessages) {
         // TODO: sendAll 은 최대 500개의 메세지 처리 가능
         final int CHUNK_SIZE = 500;
 
         List<Message> messages = new ArrayList<>();
 
-        for (NotifyDetail detail : details) {
+        for (PushMessage pushMessage : pushMessages) {
             messages.add(
                     Message.builder()
                             .setNotification(Notification.builder()
-                                    .setTitle(detail.getKeyword() + " 새로운 공지")
-                                    .setBody(detail.getTitle())
+                                    .setTitle(pushMessage.getKeyword() + " 새로운 공지")
+                                    .setBody(pushMessage.getTitle())
                                     .build()
                             )
-                            .putData("url", detail.getUrl())
-                            .setToken(detail.getFcmToken())
+                            .putData("url", pushMessage.getUrl())
+                            .setToken(pushMessage.getFcmToken())
                             .build()
             );
 

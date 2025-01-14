@@ -63,13 +63,13 @@ public class DataInit {
 
         users = userRepository.saveAll(users);
 
-//        // 알림 추가
-//        String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
-//
-//        for (String keyword : keywords) {
-//            users.forEach(user -> {
-//                notifyService.create(user.getId(), keyword);
-//            });
-//        }
+        // 알림 추가
+        String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
+
+        for (String keyword : keywords) {
+            users.forEach(user -> {
+                notifyService.create(user.getId(), keyword);
+            });
+        }
     }
 }
