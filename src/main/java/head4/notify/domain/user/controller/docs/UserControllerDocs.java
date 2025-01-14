@@ -1,15 +1,20 @@
 package head4.notify.domain.user.controller.docs;
 
 import head4.notify.customResponse.BaseResponse;
+import head4.notify.domain.user.dto.PushLogPageRes;
+import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.exceoption.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
 
 @Tag(name = "User API",  description = "사용자 관련 기능 API")
 public interface UserControllerDocs {
@@ -37,4 +42,23 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<String> patchAllow(Boolean allow);
+
+    @Operation(summary = "[알림] 알림 목록", description = "사용자가 받은 알림 목록을 조회하는 API")
+    @Parameter(name = "cursor", description = "알림 목록 마지막 요소의 Id", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<PushLogPageRes> showPushLogs(Long cursor);
+
+    @Operation(summary = "[키워드] 사용자 키워드 목록", description = "사용자가 설정한 키워드를 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = UserKeywordsRes.class))
+                    )),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<List<UserKeywordsRes>> userKeywords();
 }

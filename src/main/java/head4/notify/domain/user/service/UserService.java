@@ -2,6 +2,7 @@ package head4.notify.domain.user.service;
 
 import head4.notify.domain.article.repository.UniversityRepository;
 import head4.notify.domain.article.service.UniversityService;
+import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.repository.UserRepository;
@@ -18,6 +19,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+
+    private final UserNotifyRepository userNotifyRepository;
 
     private final UniversityService universityService;
 
@@ -45,5 +48,9 @@ public class UserService {
     public void patchAllow(Long userId, Boolean allow) {
         User user = getUserById(userId);
         user.setNotifyAllow(allow);
+    }
+
+    public List<UserKeywordsRes> getKeywords(Long userId) {
+        return userNotifyRepository.findUserKeywords(userId);
     }
 }

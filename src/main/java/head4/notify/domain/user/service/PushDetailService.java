@@ -1,9 +1,7 @@
 package head4.notify.domain.user.service;
 
-import head4.notify.domain.article.dto.ArticleInfo;
-import head4.notify.domain.article.dto.ArticlePage;
 import head4.notify.domain.user.dto.PushLog;
-import head4.notify.domain.user.dto.PushLogPage;
+import head4.notify.domain.user.dto.PushLogPageRes;
 import head4.notify.domain.user.repository.PushDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +19,7 @@ public class PushDetailService {
     private final PushDetailRepository pushDetailRepository;
 
     // TODO: 10개 단위로 커서 페이징 구현
-    public PushLogPage getArticleList(Long cursor, Long userId) {
+    public PushLogPageRes getArticleList(Long cursor, Long userId) {
         PageRequest pageRequest =
                 PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
 
@@ -35,6 +33,6 @@ public class PushDetailService {
 
         List<PushLog> pushLogs = page.getContent();
 
-        return new PushLogPage(pushLogs.get(pushLogs.size() - 1).getPushId(), page.hasNext(), pushLogs);
+        return new PushLogPageRes(pushLogs.get(pushLogs.size() - 1).getPushId(), page.hasNext(), pushLogs);
     }
 }

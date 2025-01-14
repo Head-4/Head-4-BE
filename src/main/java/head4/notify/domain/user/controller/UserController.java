@@ -2,12 +2,14 @@ package head4.notify.domain.user.controller;
 
 import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.user.controller.docs.UserControllerDocs;
-import head4.notify.domain.user.dto.PushLogPage;
+import head4.notify.domain.user.dto.PushLogPageRes;
+import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.domain.user.service.PushDetailService;
 import head4.notify.domain.user.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,9 +42,16 @@ public class UserController implements UserControllerDocs {
 
     // TODO: 사용자가 받은 알림 목록 페이징 구현
     @GetMapping("/notify/log/{cursor}")
-    public BaseResponse<PushLogPage> showPushLogs(@PathVariable("cursor") Long cursor) {
-        PushLogPage page = pushDetailService.getArticleList(cursor, 1L);
+    public BaseResponse<PushLogPageRes> showPushLogs(@PathVariable("cursor") Long cursor) {
+        PushLogPageRes page = pushDetailService.getArticleList(cursor, 1L);
         return BaseResponse.ok(page);
+    }
+
+    // TODO: 사용자가 추가한 키워드 조회
+    @GetMapping("/keywords")
+    public BaseResponse<List<UserKeywordsRes>> userKeywords() {
+        List<UserKeywordsRes> userKeywords = userService.getKeywords(1L);
+        return BaseResponse.ok(userKeywords);
     }
 
 }
