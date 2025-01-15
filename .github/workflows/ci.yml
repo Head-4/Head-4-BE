@@ -61,11 +61,16 @@ jobs:
           cd ./src/main/resources
 
           touch ./application.yml
-          echo "${{secrets.APPLICATOIN_YML_VALUES}}" >> ./application.yml
-
-          touch ./firebaseKey.json
-          echo "${{secrets.FIREBASE_PRIVATE_KEY}}" >> ./firebaseKey.json
+          echo "${{ secrets.APPLICATOIN_YML_VALUES }}" >> ./application.yml
         shell: bash
+
+      - name: Create Firebase Json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "firebaseKey.json"
+          json: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          dir: './src/main/resources'
 
       - name: Gradle Caching
         uses: actions/cache@v3
