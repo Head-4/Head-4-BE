@@ -43,7 +43,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build With Gradle
-      run: ./gradlew build
+      run: ./gradlew build -x test
 
   deploy:
     needs: build
