@@ -41,7 +41,7 @@ public class UserController implements UserControllerDocs {
     }
 
     // TODO: 사용자가 받은 알림 목록 페이징 구현
-    @GetMapping("/notify/log/{cursor}")
+    @GetMapping("/notify/page/{cursor}")
     public BaseResponse<PushLogPageRes> showPushLogs(@PathVariable("cursor") Long cursor) {
         PushLogPageRes page = pushDetailService.getArticleList(cursor, 1L);
         return BaseResponse.ok(page);
