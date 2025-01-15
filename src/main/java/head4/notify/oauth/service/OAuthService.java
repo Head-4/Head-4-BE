@@ -7,6 +7,7 @@ import head4.notify.security.jwt.JwtUtil;
 import head4.notify.domain.user.entity.RoleType;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class OAuthService {
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
 
+        Cookie cookie = new Cookie("accessToken", accessToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60 * 24 * 30);
+
+        response.addCookie(cookie);
         response.setHeader("Authorization", accessToken);
         return user.getId();
     }
