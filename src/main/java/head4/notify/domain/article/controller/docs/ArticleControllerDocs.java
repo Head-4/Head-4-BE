@@ -6,6 +6,7 @@ import head4.notify.domain.article.dto.CreateArticleRequest;
 import head4.notify.domain.notification.entity.dto.PushMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,10 +24,13 @@ public interface ArticleControllerDocs {
     })
     public List<PushMessage> create(CreateArticleRequest request);
 
-    @Operation(summary = "[메인] 공지 페이징", description = "공지 10개 단위로 페이징 하는 API")
-    @Parameter(name = "cursor", description = "보내준 마지막 공지의 id", in = ParameterIn.PATH)
+    @Operation(summary = "[메인] 공지 페이징 & 키워드 필터링 & 검색", description = "공지 10개 단위로 페이징 하는 API")
+    @Parameters(value = {
+            @Parameter(name = "cursor", description = "보내준 마지막 공지의 id", in = ParameterIn.PATH),
+            @Parameter(name = "keyword", description = "검색 & 필터링 할 키워드(전체이면 null 전송)", in = ParameterIn.PATH)
+    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ArticlePage.class))),
     })
-    public BaseResponse<ArticlePage> articleList(Long cursor);
+    public BaseResponse<ArticlePage> articleList(Long cursor, String keyword);
 }

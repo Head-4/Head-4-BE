@@ -65,20 +65,26 @@ public class ArticleService {
     }
 
     // TODO: 10개 단위로 커서 페이징 구현
-    public ArticlePage getArticleList(Long cursor, int univId) {
+    public ArticlePage getArticleList(Long cursor, int univId, String keyword) {
         PageRequest pageRequest =
                 PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
 
         Page<ArticleInfo> page;
 
         if(cursor == 0) {
-            page = articleRepository.getArticleList(univId, pageRequest);
+            page = keyword.equals("null") ?
+                    articleRepository.getArticleList(univId, pageRequest) :
+                    articleRepository.getArticleList(univId, keyword, pageRequest);
         } else {
-            page = articleRepository.getArticleList(cursor, univId, pageRequest);
+            page = keyword.equals("null") ?
+                    articleRepository.getArticleList(cursor, univId, pageRequest) :
+                    articleRepository.getArticleList(cursor, univId, keyword, pageRequest);
         }
 
         List<ArticleInfo> articles = page.getContent();
 
-        return new ArticlePage(articles.get(articles.size() - 1).getId(), page.hasNext(), articles);
+        return articles.isEmpty() ?
+                new ArticlePage(0L, false, articles) :
+                new ArticlePage(articles.get(articles.size() - 1).getId(), page.hasNext(), articles);
     }
 }

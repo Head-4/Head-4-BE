@@ -2,7 +2,7 @@ name: Java Gradle CI & CD
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
 permissions: write-all
 

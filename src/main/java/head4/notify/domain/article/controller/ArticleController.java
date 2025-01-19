@@ -27,9 +27,10 @@ public class ArticleController implements ArticleControllerDocs {
     }
 
     // TODO: 공지 커서 페이징 구현
-    @GetMapping("/page/{cursor}")
-    public BaseResponse<ArticlePage> articleList(@PathVariable("cursor") Long cursor) {
-        ArticlePage page = articleService.getArticleList(cursor, 1);
+    @GetMapping("/page/{cursor}/{keyword}")
+    public BaseResponse<ArticlePage> articleList(@PathVariable("cursor") Long cursor,
+                                                 @PathVariable("keyword") String keyword) {
+        ArticlePage page = articleService.getArticleList(cursor, 1, keyword);
         return BaseResponse.ok(page);
     }
 
