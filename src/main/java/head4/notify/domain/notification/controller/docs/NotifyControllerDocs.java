@@ -3,6 +3,7 @@ package head4.notify.domain.notification.controller.docs;
 import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.notification.entity.dto.AddKeywordsRequest;
 import head4.notify.exceoption.ErrorCode;
+import head4.notify.security.custom.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,5 +29,5 @@ public interface NotifyControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<String> addKeywords(AddKeywordsRequest request);
+    public BaseResponse<String> addKeywords(AddKeywordsRequest request, CustomUserDetails userDetails);
 }

@@ -4,6 +4,7 @@ import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.article.dto.ArticlePage;
 import head4.notify.domain.article.dto.CreateArticleRequest;
 import head4.notify.domain.notification.entity.dto.PushMessage;
+import head4.notify.security.custom.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -33,7 +34,7 @@ public interface ArticleControllerDocs {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ArticlePage.class))),
     })
-    public BaseResponse<ArticlePage> articleList(Long cursor, String keyword);
+    public BaseResponse<ArticlePage> articleList(Long cursor, String keyword, CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[테스트] 접근 권한 테스트", description = "접근 권한을 테스트하는 API")

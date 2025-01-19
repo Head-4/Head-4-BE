@@ -9,6 +9,10 @@ import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.repository.UserRepository;
 import head4.notify.exceoption.CustomException;
 import head4.notify.exceoption.ErrorCode;
+import head4.notify.security.custom.CustomUserInfoDto;
+import head4.notify.security.jwt.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +29,23 @@ public class UserService {
 
     private final UniversityService universityService;
 
+    private final JwtUtil jwtUtil;
+
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
-    public void patchUnivId(Long userId, String univName) {
+    public void patchUnivId(Long userId, String univName, HttpServletResponse response) {
         User user = getUserById(userId);
         Integer univId = universityService.getUnivId(univName);
+
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), univId, user.getEmail(), user.getRoleType());
+        String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
+        Cookie cookie = jwtUtil.createCookie(accessToken);
+
+        response.addCookie(cookie);
 
         user.setUnivId(univId);
     }

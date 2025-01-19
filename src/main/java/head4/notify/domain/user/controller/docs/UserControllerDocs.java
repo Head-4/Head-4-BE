@@ -4,6 +4,7 @@ import head4.notify.customResponse.BaseResponse;
 import head4.notify.domain.user.dto.PushLogPageRes;
 import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.exceoption.ErrorCode;
+import head4.notify.security.custom.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class))),
             @ApiResponse(responseCode = "40402", description = "대학교 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<String> patchUniv(String name);
+    public BaseResponse<String> patchUniv(String name, CustomUserDetails userDetails, HttpServletResponse response);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩] fcm token 저장", description = "사용자가 알림을 수락하면 fcm token을 저장하는 API")
@@ -36,7 +38,7 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<String> patchToken(String token);
+    public BaseResponse<String> patchToken(String token, CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩, 설정] 알림 허용 설정", description = "사용자의 알림 허용 여부를 변경하는 API")
@@ -45,7 +47,7 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<String> patchAllow(Boolean allow);
+    public BaseResponse<String> patchAllow(Boolean allow, CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[알림] 알림 목록", description = "사용자가 받은 알림 목록을 조회하는 API")
@@ -54,7 +56,7 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<PushLogPageRes> showPushLogs(Long cursor);
+    public BaseResponse<PushLogPageRes> showPushLogs(Long cursor, CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[키워드] 사용자 키워드 목록", description = "사용자가 설정한 키워드를 조회하는 API")
@@ -66,7 +68,7 @@ public interface UserControllerDocs {
                     )),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<List<UserKeywordsRes>> userKeywords();
+    public BaseResponse<List<UserKeywordsRes>> userKeywords(CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[키워드] 사용자 키워드 삭제", description = "사용자가 선택한 키워드를 삭제하는 API")
@@ -74,5 +76,5 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<String> deleteKeyword(Long notifyId);
+    public BaseResponse<String> deleteKeyword(Long notifyId, CustomUserDetails userDetails);
 }

@@ -7,7 +7,9 @@ import head4.notify.domain.article.dto.CreateArticleRequest;
 import head4.notify.domain.article.service.ArticleService;
 import head4.notify.domain.notification.entity.dto.PushMessage;
 import head4.notify.domain.notification.service.TotalService;
+import head4.notify.security.custom.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +31,9 @@ public class ArticleController implements ArticleControllerDocs {
     // TODO: 공지 커서 페이징 구현
     @GetMapping("/page/{cursor}/{keyword}")
     public BaseResponse<ArticlePage> articleList(@PathVariable("cursor") Long cursor,
-                                                 @PathVariable("keyword") String keyword) {
-        ArticlePage page = articleService.getArticleList(cursor, 1, keyword);
+                                                 @PathVariable("keyword") String keyword,
+                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
+        ArticlePage page = articleService.getArticleList(cursor, userDetails.getUnivId(), keyword);
         return BaseResponse.ok(page);
     }
 
