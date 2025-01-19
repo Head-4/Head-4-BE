@@ -9,6 +9,8 @@ import lombok.Getter;
 public class CustomUserInfoDto {
     private Long userId;
 
+    private Integer univId;
+
     private String email;
 
     private RoleType roleType;

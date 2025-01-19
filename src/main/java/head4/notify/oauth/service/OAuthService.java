@@ -23,6 +23,7 @@ public class OAuthService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public Long kakaoOAuthLogin(String code, HttpServletResponse response) {
         KakaoDto.OAuthToken oAuthToken = kakaoUtil.getAccessToken(code);
         KakaoDto.UserInfo userInfo = kakaoUtil.getUserInfo(oAuthToken.getAccess_token());
@@ -36,15 +37,12 @@ public class OAuthService {
                 .orElseGet(() -> join(kakaoEmail));
 
         // 사용자 jwt 토큰 생성하기
-        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getEmail(), user.getRoleType());
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
-
-        Cookie cookie = new Cookie("accessToken", accessToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60 * 24 * 30);
+        Cookie cookie = jwtUtil.createCookie(accessToken);
 
         response.addCookie(cookie);
-        response.setHeader("Authorization", accessToken);
+        //response.setHeader("Authorization", accessToken);
         return user.getId();
     }
 

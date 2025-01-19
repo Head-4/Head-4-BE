@@ -4,6 +4,7 @@ import head4.notify.security.custom.CustomUserInfoDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,12 @@ public class JwtUtil {
         return createToken(member, accessTokenExpTime);
     }
 
+    public Cookie createCookie(String accessToken) {
+        Cookie cookie = new Cookie("accessToken", accessToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60 * 24 * 30);
+        return cookie;
+    }
 
     /**
      * JWT 생성
@@ -46,6 +53,7 @@ public class JwtUtil {
     private String createToken(CustomUserInfoDto user, long expireTime) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.getUserId());
+        claims.put("univId", user.getUnivId());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
