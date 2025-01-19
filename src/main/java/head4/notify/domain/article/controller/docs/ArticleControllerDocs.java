@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -33,4 +34,8 @@ public interface ArticleControllerDocs {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ArticlePage.class))),
     })
     public BaseResponse<ArticlePage> articleList(Long cursor, String keyword);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[테스트] 접근 권한 테스트", description = "접근 권한을 테스트하는 API")
+    public String test();
 }

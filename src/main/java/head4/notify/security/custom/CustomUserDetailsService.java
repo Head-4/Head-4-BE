@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findById(Long.parseLong(id))
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId());
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
 
         return new CustomUserDetails(customUserInfoDto);
     }

@@ -23,4 +23,9 @@ public class LoginController {
         Long userId = oAuthService.kakaoOAuthLogin(code, response);
         return BaseResponse.ok(userId);
     }
+
+    @PostMapping("/test")
+    public BaseResponse<?> test(HttpServletResponse response) {
+        return BaseResponse.ok(oAuthService.user1Login(response));
+    }
 }

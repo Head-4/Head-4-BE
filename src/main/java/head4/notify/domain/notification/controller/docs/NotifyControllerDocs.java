@@ -11,11 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Notify API",  description = "알림 관련 기능 API")
 public interface NotifyControllerDocs {
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩, 설정] 키워드 추가", description = "사용자가 지정한 키워드들을 등록하는 API")
     @Parameter(description = "알림 설정할 키워드",
             content = @Content(

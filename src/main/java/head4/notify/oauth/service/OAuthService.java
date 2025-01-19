@@ -1,5 +1,7 @@
 package head4.notify.oauth.service;
 
+import head4.notify.exceoption.CustomException;
+import head4.notify.exceoption.ErrorCode;
 import head4.notify.oauth.kakao.KakaoDto;
 import head4.notify.oauth.kakao.KakaoUtil;
 import head4.notify.security.custom.CustomUserInfoDto;
@@ -44,6 +46,19 @@ public class OAuthService {
         response.addCookie(cookie);
         //response.setHeader("Authorization", accessToken);
         return user.getId();
+    }
+
+    public String user1Login(HttpServletResponse response) {
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 사용자 jwt 토큰 생성하기
+        CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
+        String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
+        Cookie cookie = jwtUtil.createCookie(accessToken);
+
+        response.addCookie(cookie);
+        return accessToken;
     }
 
     // 가입이 안된 사용자 회원가입 기능

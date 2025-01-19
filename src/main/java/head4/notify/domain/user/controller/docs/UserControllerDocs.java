@@ -13,11 +13,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
 @Tag(name = "User API",  description = "사용자 관련 기능 API")
 public interface UserControllerDocs {
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩] 대학교 저장", description = "사용자가 선택한 대학 정보를 저장하는 API")
     @Parameter(name = "name", description = "대학교 이름", in = ParameterIn.PATH)
     @ApiResponses(value = {
@@ -27,6 +29,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<String> patchUniv(String name);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩] fcm token 저장", description = "사용자가 알림을 수락하면 fcm token을 저장하는 API")
     @Parameter(name = "token", description = "사용자 fcm token", in = ParameterIn.PATH)
     @ApiResponses(value = {
@@ -35,6 +38,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<String> patchToken(String token);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩, 설정] 알림 허용 설정", description = "사용자의 알림 허용 여부를 변경하는 API")
     @Parameter(name = "allow", description = "사용자 알림 허용 여부", in = ParameterIn.PATH)
     @ApiResponses(value = {
@@ -43,6 +47,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<String> patchAllow(Boolean allow);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[알림] 알림 목록", description = "사용자가 받은 알림 목록을 조회하는 API")
     @Parameter(name = "cursor", description = "알림 목록 마지막 요소의 Id", in = ParameterIn.PATH)
     @ApiResponses(value = {
@@ -51,6 +56,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<PushLogPageRes> showPushLogs(Long cursor);
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[키워드] 사용자 키워드 목록", description = "사용자가 설정한 키워드를 조회하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
@@ -62,6 +68,7 @@ public interface UserControllerDocs {
     })
     public BaseResponse<List<UserKeywordsRes>> userKeywords();
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[키워드] 사용자 키워드 삭제", description = "사용자가 선택한 키워드를 삭제하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json")),
