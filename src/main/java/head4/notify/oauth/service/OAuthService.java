@@ -12,6 +12,7 @@ import head4.notify.domain.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +42,9 @@ public class OAuthService {
         // 사용자 jwt 토큰 생성하기
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
-        Cookie cookie = jwtUtil.createCookie(accessToken);
+        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookie.toString());
         //response.setHeader("Authorization", accessToken);
         return user.getId();
     }
@@ -55,9 +56,9 @@ public class OAuthService {
         // 사용자 jwt 토큰 생성하기
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
-        Cookie cookie = jwtUtil.createCookie(accessToken);
+        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookie.toString());
         return accessToken;
     }
 

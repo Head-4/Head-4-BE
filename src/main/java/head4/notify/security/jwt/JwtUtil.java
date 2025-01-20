@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -37,10 +38,19 @@ public class JwtUtil {
         return createToken(member, accessTokenExpTime);
     }
 
-    public Cookie createCookie(String accessToken) {
-        Cookie cookie = new Cookie("accessToken", accessToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60 * 24 * 30);
+    public ResponseCookie createCookie(String accessToken) {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .domain("alleyloss.click")
+                .maxAge(60 * 60 * 24 * 30)
+                .build();
+//        Cookie cookie = new Cookie("accessToken", accessToken);
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+//        cookie.setMaxAge(60 * 60 * 24 * 30);
         return cookie;
     }
 

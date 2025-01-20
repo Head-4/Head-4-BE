@@ -14,6 +14,7 @@ import head4.notify.security.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +44,9 @@ public class UserService {
 
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), univId, user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
-        Cookie cookie = jwtUtil.createCookie(accessToken);
+        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookie.toString());
 
         user.setUnivId(univId);
     }
