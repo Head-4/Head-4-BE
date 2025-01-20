@@ -3,14 +3,26 @@ package head4.notify.customResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import head4.notify.exceoption.CustomException;
 import head4.notify.exceoption.ExceptionDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
-public record BaseResponse<T>(
-        HttpStatus httpStatus,
-        boolean success,
-        @Nullable T data,
-        @Nullable ExceptionDto error
-) {
+
+@Getter
+@NoArgsConstructor
+public class BaseResponse<T> {
+        private HttpStatus httpStatus;
+        private boolean success;
+        @Nullable private T data;
+        @Nullable private ExceptionDto error;
+
+        private BaseResponse(HttpStatus httpStatus, boolean success, @Nullable T data, @Nullable ExceptionDto error) {
+                this.httpStatus = httpStatus;
+                this.success = success;
+                this.data = data;
+                this.error = error;
+        }
+
         public static <T> BaseResponse<T> ok(@Nullable final T data) {
                 return new BaseResponse<>(HttpStatus.OK, true, data, null);
         }

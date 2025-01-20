@@ -26,7 +26,10 @@ public interface NotifyControllerDocs {
                     array = @ArraySchema(schema = @Schema(implementation = String.class))
             ))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class, examples = "success"))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<String> addKeywords(AddKeywordsRequest request, CustomUserDetails userDetails);
