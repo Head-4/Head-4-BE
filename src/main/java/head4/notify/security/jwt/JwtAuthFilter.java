@@ -24,24 +24,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //String authorizationHeader = request.getHeader("Authorization");
+        String accessToken = request.getHeader("Authorization");
         //String authorizationHeader = request.getCookies().;
-        String accessToken = null;
-        Cookie[] cookies = request.getCookies();
+//        String accessToken = null;
+//        Cookie[] cookies = request.getCookies();
+//
+//        if(cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                System.out.println("cookie = " + cookie.getName());
+//                if("accessToken".equals(cookie.getName())) {
+//                    accessToken = cookie.getValue();
+//                    System.out.println("accessToken = " + accessToken);
+//                    break;
+//                }
+//            }
+//        }
 
-        if(cookies != null) {
-            for (Cookie cookie : cookies) {
-                System.out.println("cookie = " + cookie.getName());
-                if("accessToken".equals(cookie.getName())) {
-                    accessToken = cookie.getValue();
-                    System.out.println("accessToken = " + accessToken);
-                    break;
-                }
-            }
-        }
-
-        if (accessToken != null) {
-            String token = accessToken;
+        if (accessToken != null && accessToken.startsWith("Bearer ")) {
+            // String token = accessToken;
+            String token = accessToken.substring(7);
             //JWT 유효성 검증
             if (jwtUtil.validateToken(token)) {
                 Long userId = jwtUtil.getUserId(token);

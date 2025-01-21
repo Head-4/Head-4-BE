@@ -56,6 +56,14 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(page);
     }
 
+    // TODO: 키워드 추가하기
+    @PostMapping("/add/keyword/{keyword}")
+    public BaseResponse<String> addKeyword(@PathVariable("keyword") String keyword,
+                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.addKeyword(userDetails.getUserId(), keyword);
+        return BaseResponse.ok("success");
+    }
+
     // TODO: 사용자가 추가한 키워드 조회
     @GetMapping("/keywords")
     public BaseResponse<List<UserKeywordsRes>> userKeywords(@AuthenticationPrincipal CustomUserDetails userDetails) {

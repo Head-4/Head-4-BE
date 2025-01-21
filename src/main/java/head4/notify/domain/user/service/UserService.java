@@ -2,9 +2,12 @@ package head4.notify.domain.user.service;
 
 import head4.notify.domain.article.repository.UniversityRepository;
 import head4.notify.domain.article.service.UniversityService;
+import head4.notify.domain.notification.entity.Notify;
+import head4.notify.domain.notification.repository.NotifyRepository;
 import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.domain.user.entity.User;
 import head4.notify.domain.user.entity.UserNotify;
+import head4.notify.domain.user.entity.embedded.UserNotifyId;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.repository.UserRepository;
 import head4.notify.exceoption.CustomException;
@@ -27,6 +30,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserNotifyRepository userNotifyRepository;
+
+    private final NotifyRepository notifyRepository;
 
     private final UniversityService universityService;
 
@@ -62,6 +67,17 @@ public class UserService {
     public void patchAllow(Long userId, Boolean allow) {
         User user = getUserById(userId);
         user.setNotifyAllow(allow);
+    }
+
+    @Transactional
+    public void addKeyword(Long userId, String keyword) {
+        User user = getUserById(userId);
+
+        Notify notify = notifyRepository.findNotifyByUnivIdAndKeyword(user.getUnivId(), keyword)
+                .orElseGet(() -> notifyRepository.save(new Notify(user.getUnivId(), keyword)));
+
+        UserNotifyId userNotifyId = new UserNotifyId(userId, notify.getId());
+        userNotifyRepository.save(new UserNotify((userNotifyId)));
     }
 
     public List<UserKeywordsRes> getKeywords(Long userId) {

@@ -71,6 +71,18 @@ public interface UserControllerDocs {
     public BaseResponse<PushLogPageRes> showPushLogs(Long cursor, CustomUserDetails userDetails);
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[키워드] 사용자 키워드 추가", description = "사용자의 키워드를 등록하는 API")
+    @Parameter(name = "keyword", description = "사용자가 등록할 키워드", in = ParameterIn.PATH)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> addKeyword(String keyword, CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[키워드] 사용자 키워드 목록", description = "사용자가 설정한 키워드를 조회하는 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",
