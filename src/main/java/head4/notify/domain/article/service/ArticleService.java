@@ -41,6 +41,8 @@ public class ArticleService {
         // 캠퍼스가 1 ~ 이면 공통공지도 알림으로 찾는 로직
         for (ArticleDetail detail : articleDetails) {
             if(universities.size() > 1 && detail.getCampus() == 0) {
+                if(checkDuplicate(detail.getArticle_num(), universities.get(1).getId())) continue;
+
                 for(int i = 1; i < universities.size(); i++) {
                     articles.add(new Article(
                             universities.get(i).getId(),
@@ -50,18 +52,24 @@ public class ArticleService {
                 }
             }
             else {
+                if(checkDuplicate(detail.getArticle_num(), universities.get(detail.getCampus()).getId())) continue;
+
                 articles.add(new Article(
                         universities.get(detail.getCampus()).getId(),
                         detail.getTitle(),
                         detail.getArticle_url(),
                         detail.getArticle_num()));
             }
-
         }
 
         articles = articleRepository.saveAll(articles);
 
         return articles.stream().map(article -> article.getId()).toList();
+    }
+
+    // 존재하는 공지인지 확인
+    private boolean checkDuplicate(String num, Integer univId) {
+        return articleRepository.existsByNumAndUnivId(num, univId);
     }
 
     // TODO: 10개 단위로 커서 페이징 구현

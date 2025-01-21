@@ -44,5 +44,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
                                      @Param("keyword") String keyword,
                                      Pageable pageable);
 
-
+    boolean existsByNumAndUnivId(@Param("num") String num,
+                                 @Param("univId") Integer univId);
 }
