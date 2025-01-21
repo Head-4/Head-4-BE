@@ -30,7 +30,7 @@ public class DataInit {
     @PostConstruct
     public void init() {
         // 대학교 생성
-        String[] names = {"상명대학교", "백석대학교", "나사렛대학교", "순천향대학교", "호서대학교"};
+        String[] names = {"상명대학교", "백석대학교", "나사렛대학교", "순천향대학교", "호서대학교", "한국기술교육대학교", "연암대학교", "백석문화대학교"};
         List<University> universities = new ArrayList<>();
 
         universities.add(new University("상명대학교 천안캠퍼스", 2));
@@ -71,5 +71,7 @@ public class DataInit {
                 notifyService.create(user.getId(), keyword);
             });
         }
+
+
     }
 }

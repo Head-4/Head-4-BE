@@ -23,6 +23,23 @@ public class UserController implements UserControllerDocs {
 
     private final PushDetailService pushDetailService;
 
+    // TODO: 사용자 이메일 조회
+    @GetMapping("/email")
+    public BaseResponse<String> email(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return BaseResponse.ok(userService.getEmail(userDetails.getUserId()));
+    }
+
+    // TODO: 사용자 학교 조회
+    @GetMapping("/university")
+    public BaseResponse<String> university(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return BaseResponse.ok(userService.getUniversity(userDetails.getUserId()));
+    }
+    // TODO: 사용자 알림 허용 여부 조회
+    @GetMapping("/allow")
+    public BaseResponse<Boolean> allow(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return BaseResponse.ok(userService.getAllow(userDetails.getUserId()));
+    }
+
     // TODO: 대학교 정보 저장
     @PatchMapping("/univ/{name}")
     public BaseResponse<String> patchUniv(@PathVariable("name") String name,

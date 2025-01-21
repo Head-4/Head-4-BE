@@ -19,4 +19,8 @@ public interface UniversityRepository extends JpaRepository<University, Long> {
     @Query("select u.id from University u " +
             "where u.name = :name")
     Optional<Integer> getUnivId(@Param("name") String name);
+
+    @Query("select u.name from University u " +
+            "where u.id = :univId ")
+    String getUnivName(@Param("univId") Integer univId);
 }

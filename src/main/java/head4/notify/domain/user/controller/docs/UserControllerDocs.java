@@ -22,6 +22,40 @@ import java.util.List;
 @Tag(name = "User API",  description = "사용자 관련 기능 API")
 public interface UserControllerDocs {
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[사용자] 이메일 조회", description = "사용자 이메일 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class, examples = "user@email.com"))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> email(CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[사용자] 대학교 이름", description = "사용자 대학교 이름을 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class, examples = "상명대학교 천안캠퍼스"))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class))),
+            @ApiResponse(responseCode = "40402", description = "대학교 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<String> university(CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[사용자] 알림 허용 여부", description = "사용자 알림 허용 여부를 조회하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class, examples = "true"))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<Boolean> allow(CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @Operation(summary = "[온보딩] 대학교 저장", description = "사용자가 선택한 대학 정보를 저장하는 API")
     @Parameter(name = "name", description = "대학교 이름", in = ParameterIn.PATH)
     @ApiResponses(value = {

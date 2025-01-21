@@ -35,11 +35,28 @@ public class UserService {
 
     private final UniversityService universityService;
 
+    private final UniversityRepository universityRepository;
+
     private final JwtUtil jwtUtil;
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public String getEmail(Long userId) {
+        User user = getUserById(userId);
+        return user.getEmail();
+    }
+
+    public String getUniversity(Long userId) {
+        User user = getUserById(userId);
+        return universityRepository.getUnivName(user.getUnivId());
+    }
+
+    public Boolean getAllow(Long userId) {
+        User user = getUserById(userId);
+        return Boolean.valueOf(user.getNotifyAllow());
     }
 
     @Transactional
