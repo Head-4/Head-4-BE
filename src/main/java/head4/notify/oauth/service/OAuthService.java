@@ -16,6 +16,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,17 +29,25 @@ public class OAuthService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long kakaoOAuthLogin(String code, HttpServletResponse response) {
+    public Boolean kakaoOAuthLogin(String code, HttpServletResponse response) {
         KakaoDto.OAuthToken oAuthToken = kakaoUtil.getAccessToken(code);
         KakaoDto.UserInfo userInfo = kakaoUtil.getUserInfo(oAuthToken.getAccess_token());
 
+        Boolean newUser = false;
         String kakaoEmail = userInfo.getKakao_account().getEmail();
 
         // 해당 이메일로 가임된 유저인지 확인
         // 가입된 사용자 -> 해당 엔티티 반환
         // 가입되지 않은 사용자 -> join()을 통해 새로운 User 생성
-        User user = userRepository.findByEmail(kakaoEmail)
-                .orElseGet(() -> join(kakaoEmail));
+        User user = null;
+        Optional<User> optionalUser = userRepository.findByEmail(kakaoEmail);
+
+        if(!optionalUser.isPresent()) {
+            user = join(kakaoEmail);
+            newUser = true;
+        } else {
+            user = optionalUser.get();
+        }
 
         // 사용자 jwt 토큰 생성하기
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
@@ -46,7 +56,7 @@ public class OAuthService {
 
         response.addHeader("Set-Cookie", cookie.toString());
         //response.setHeader("Authorization", accessToken);
-        return user.getId();
+        return newUser;
     }
 
     public String user1Login(HttpServletResponse response) {

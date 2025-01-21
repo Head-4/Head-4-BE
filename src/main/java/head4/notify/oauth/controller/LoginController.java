@@ -18,10 +18,9 @@ public class LoginController {
     private final OAuthService oAuthService;
 
     @PostMapping("/kakao/{code}")
-    public BaseResponse<Long> kakaoLogin(@PathVariable(value = "code") String code,
+    public BaseResponse<Boolean> kakaoLogin(@PathVariable(value = "code") String code,
                                          HttpServletResponse response) {
-        Long userId = oAuthService.kakaoOAuthLogin(code, response);
-        return BaseResponse.ok(userId);
+        return BaseResponse.ok(oAuthService.kakaoOAuthLogin(code, response));
     }
 
     @PostMapping("/test")
