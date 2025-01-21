@@ -41,10 +41,10 @@ public class JwtUtil {
     public ResponseCookie createCookie(String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-                .sameSite("None")
+                //.sameSite("None")
                 .httpOnly(true)
-                .secure(true)
-                .domain("alleyloss.click")
+                //.secure(true)
+                .domain("localhost")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
 //        Cookie cookie = new Cookie("accessToken", accessToken);

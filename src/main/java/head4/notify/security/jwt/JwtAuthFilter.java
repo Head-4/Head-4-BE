@@ -3,6 +3,7 @@ package head4.notify.security.jwt;
 import head4.notify.security.custom.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader("Authorization");
+        //String authorizationHeader = request.getHeader("Authorization");
+        //String authorizationHeader = request.getCookies().;
+        String accessToken = null;
+        Cookie[] cookies = request.getCookies();
 
-        //JWT가 헤더에 있는 경우
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                System.out.println("cookie = " + cookie.getName());
+                if("accessToken".equals(cookie.getName())) {
+                    accessToken = cookie.getValue();
+                    System.out.println("accessToken = " + accessToken);
+                    break;
+                }
+            }
+        }
+
+        if (accessToken != null) {
+            String token = accessToken;
             //JWT 유효성 검증
             if (jwtUtil.validateToken(token)) {
                 Long userId = jwtUtil.getUserId(token);
