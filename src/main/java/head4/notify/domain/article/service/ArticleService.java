@@ -67,6 +67,46 @@ public class ArticleService {
         return articles.stream().map(article -> article.getId()).toList();
     }
 
+    @Transactional
+    public List<University> create2(CreateArticleRequest request) {
+        String univName = request.getSchool();
+
+        // 해당 대학교(캠퍼스 포함) 엔티티 가져오기
+        // 캠퍼스 기준 오름차순 정렬 0 1 2 형식
+        List<University> universities = universityRepository.findUniversitiesByName(univName);
+
+        List<Article> articles = new ArrayList<>();
+        List<ArticleDetail> articleDetails = request.getArticleDetails();
+
+        // TODO: try catch 로 잘못된 인덱스 오류 체크 추가
+        // 캠퍼스가 1 ~ 이면 공통공지도 알림으로 찾는 로직
+        for (ArticleDetail detail : articleDetails) {
+            if(universities.size() > 1 && detail.getCampus() == 0) {
+                if(checkDuplicate(detail.getArticle_num(), universities.get(1).getId())) continue;
+
+                for(int i = 1; i < universities.size(); i++) {
+                    articles.add(new Article(
+                            universities.get(i).getId(),
+                            detail.getTitle(),
+                            detail.getArticle_url(),
+                            detail.getArticle_num()));
+                }
+            }
+            else {
+                if(checkDuplicate(detail.getArticle_num(), universities.get(detail.getCampus()).getId())) continue;
+
+                articles.add(new Article(
+                        universities.get(detail.getCampus()).getId(),
+                        detail.getTitle(),
+                        detail.getArticle_url(),
+                        detail.getArticle_num()));
+            }
+        }
+        if(universities.size() > 1) universities.remove(0);
+        articleRepository.saveAll(articles);
+        return universities;
+    }
+
     // 존재하는 공지인지 확인
     private boolean checkDuplicate(String num, Integer univId) {
         return articleRepository.existsByNumAndUnivId(num, univId);
