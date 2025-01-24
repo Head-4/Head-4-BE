@@ -2,6 +2,7 @@ package head4.notify.security;
 
 import head4.notify.security.custom.CustomUserDetailsService;
 import head4.notify.security.jwt.JwtAuthFilter;
+import head4.notify.security.jwt.JwtExceptionFilter;
 import head4.notify.security.jwt.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,8 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
+
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtUtil jwtUtil;
 
     private static final String[] AUTH_WHITELIST = {
@@ -50,10 +53,12 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        http.addFilterBefore(
+        http
+                .addFilterBefore(
                 new JwtAuthFilter(customUserDetailsService, jwtUtil),
                 UsernamePasswordAuthenticationFilter.class
-        );
+                )
+                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize

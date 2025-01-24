@@ -1,5 +1,7 @@
 package head4.notify.security.jwt;
 
+import head4.notify.exceoption.CustomException;
+import head4.notify.exceoption.ErrorCode;
 import head4.notify.security.custom.CustomUserInfoDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -97,14 +99,17 @@ public class JwtUtil {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            throw e;
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
+            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            throw e;
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+            throw e;
         }
-        return false;
     }
 
 

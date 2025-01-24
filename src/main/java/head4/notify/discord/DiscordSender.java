@@ -66,6 +66,41 @@ public class DiscordSender {
         }
     }
 
+    public void sendWebhookMessage2(String code, String message, String url) {
+        DiscordMessage discordMessage = DiscordMessage.builder()
+                .content("## Spring Exception")
+                .embeds(
+                        List.of(
+                                DiscordMessage.Embed.builder()
+                                        .title("예외 발생")
+                                        .description(
+                                                "### ⏰ 발생 시간\n"
+                                                        + "**" + LocalDateTime.now() + "**\n"
+                                                        + "### 🔗 요청 URL\n"
+                                                        + "**" + url + "**\n"
+                                                        + "### 🚨 오류 코드\n"
+                                                        + "**" + code + "**\n"
+                                                        + "### 📑 오류 내용\n"
+                                                        + "**" + message + "**\n"
+                                        )
+                                        .build()
+                        )
+                )
+                .build();
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<String> httpEntity = new HttpEntity<>(convertToJson(discordMessage), headers);
+            restTemplate.postForObject(webhookURL, httpEntity, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(ErrorCode.DISCORD_WEBHOOK_ERROR);
+        }
+    }
+
     private String convertToJson(DiscordMessage message) {
         try {
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(message);

@@ -6,6 +6,7 @@ import head4.notify.domain.article.controller.ArticleController;
 import head4.notify.domain.notification.controller.NotifyController;
 import head4.notify.domain.user.controller.UserController;
 import head4.notify.oauth.controller.LoginController;
+import head4.notify.security.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,8 @@ import java.net.http.HttpResponse;
                 LoginController.class,
                 ArticleController.class,
                 NotifyController.class,
-                UserController.class
+                UserController.class,
+                JwtAuthFilter.class
         }
 )
 @RequiredArgsConstructor

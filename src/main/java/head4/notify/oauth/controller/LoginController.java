@@ -24,7 +24,7 @@ public class LoginController {
     }
 
     @PostMapping("/test")
-    public BaseResponse<?> test(HttpServletResponse response) {
-        return BaseResponse.ok(oAuthService.user1Login(response));
+    public String test(HttpServletResponse response) {
+        return oAuthService.user1Login(response);
     }
 }
