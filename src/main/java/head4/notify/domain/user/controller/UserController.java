@@ -95,4 +95,9 @@ public class UserController implements UserControllerDocs {
         userService.deleteKeyword(userDetails.getUserId(), notifyId);
         return BaseResponse.ok("success");
     }
+
+    @GetMapping("/healthy")
+    public String healthy() {
+        return "success";
+    }
 }
