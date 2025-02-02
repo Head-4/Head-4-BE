@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class DataInit {
 
     @PostConstruct
     public void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         // 대학교 생성
         String[] names = {"상명대학교", "백석대학교", "나사렛대학교", "순천향대학교", "호서대학교", "한국기술교육대학교", "연암대학교", "백석문화대학교"};
         List<University> universities = new ArrayList<>();
