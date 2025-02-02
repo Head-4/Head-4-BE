@@ -49,9 +49,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         try {
-            if (accessToken != null && accessToken.startsWith("Bearer ")) {
-                // String token = accessToken;
-                String token = accessToken.substring(7);
+            if (accessToken != null) {
+                String token = accessToken;
+                //String token = accessToken.substring(7);
                 //JWT 유효성 검증
                 if (jwtUtil.validateToken(token)) {
                     Long userId = jwtUtil.getUserId(token);
