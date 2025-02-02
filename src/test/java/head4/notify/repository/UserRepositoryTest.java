@@ -31,7 +31,7 @@ public class UserRepositoryTest {
         StopWatch stopWatch = new StopWatch();
         List<User> users = new ArrayList<>();
 
-        for(int i = 1; i <= 100; i++) {
+        for(int i = 1; i <= 10000; i++) {
             users.add(new User("test" + i, RoleType.ROLE_USER));
         }
 
@@ -39,9 +39,10 @@ public class UserRepositoryTest {
         userRepository.saveAll(users);
         stopWatch.stop();
 
-        //   100 -> 114ms
-        //  1000 -> 335ms
-        // 10000 -> 1600ms
+        // 괄호는 도커 mariaDB 환경
+        //   100 -> maria: 33ms(75ms) | mysql: 91ms
+        //  1000 -> maria: 246ms(607ms) | mysql: 784ms
+        // 10000 -> maria: 1517ms(5403ms) | mysql: 6233ms
         System.out.println("수행시간: " + stopWatch.getTotalTimeMillis() + "ms");
     }
 
@@ -50,7 +51,7 @@ public class UserRepositoryTest {
         StopWatch stopWatch = new StopWatch();
         List<User> users = new ArrayList<>();
 
-        for(int i = 1; i <= 100; i++) {
+        for(int i = 1; i <= 10000; i++) {
             users.add(new User("test" + i, RoleType.ROLE_USER));
         }
 
@@ -58,9 +59,9 @@ public class UserRepositoryTest {
         userBulkRepository.saveAllJdbc(users);
         stopWatch.stop();
 
-        //   100 -> 15ms
-        //  1000 -> 22ms
-        // 10000 -> 76ms
+        //   100 -> maria: 6ms(7ms) | mysql: 69ms
+        //  1000 -> maria: 11ms(18ms) | mysql: 549ms
+        // 10000 -> maria: 58ms(106ms) | mysql: 5146ms
         System.out.println("수행시간: " + stopWatch.getTotalTimeMillis() + "ms");
     }
 }

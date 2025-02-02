@@ -41,7 +41,7 @@ public class TotalService {
 
 
         // 푸시 알림 전송 한 개당 150~200ms
-        //notifyService.sendPushMessage(pushMessages);
+        notifyService.sendPushMessage(pushMessages);
 
         // 푸시 알림 저장
         pushDetailJdbcRepository.batchSave(pushMessages);

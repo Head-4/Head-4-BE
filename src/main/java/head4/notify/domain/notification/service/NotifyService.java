@@ -1,8 +1,7 @@
 package head4.notify.domain.notification.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.api.core.ApiFuture;
+import com.google.firebase.messaging.*;
 import head4.notify.domain.notification.entity.Notify;
 import head4.notify.domain.notification.entity.dto.AddKeywordsRequest;
 import head4.notify.domain.notification.entity.dto.PushMessage;
@@ -12,6 +11,8 @@ import head4.notify.domain.user.entity.UserNotify;
 import head4.notify.domain.user.entity.embedded.UserNotifyId;
 import head4.notify.domain.user.repository.UserNotifyRepository;
 import head4.notify.domain.user.service.UserService;
+import head4.notify.exceoption.CustomException;
+import head4.notify.exceoption.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
@@ -103,6 +105,29 @@ public class NotifyService {
     }
 
     private void sendFirebase(List<Message> messages) {
-        FirebaseMessaging.getInstance().sendEachAsync(messages);
+        try {
+            ApiFuture<BatchResponse> future = FirebaseMessaging.getInstance().sendEachAsync(messages);
+            BatchResponse batchResponse = future.get();
+
+            List<Message> failedMessages = new ArrayList<>();
+
+            for(int i = 0; i < batchResponse.getResponses().size(); i++) {
+                SendResponse sendResponse = batchResponse.getResponses().get(i);
+
+                if(!sendResponse.isSuccessful()) {
+                    failedMessages.add(messages.get(i));
+                    log.error("Failed to send message: {} - Error: {}",
+                            messages.get(i).toString(),
+                            sendResponse.getException().getMessage());
+                }
+            }
+
+            if(!failedMessages.isEmpty()) {
+                FirebaseMessaging.getInstance().sendEachAsync(failedMessages);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            throw new CustomException(ErrorCode.FIREBASE_MESSAGE_SEND_ERROR);
+        }
     }
 }

@@ -43,10 +43,10 @@ public class JwtUtil {
     public ResponseCookie createCookie(String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")
-                //.sameSite("None")
+                .sameSite("Strict")
                 .httpOnly(true)
-                //.secure(true)
-                .domain("localhost")
+                .secure(true)
+                .domain("univ-on.com")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
 //        Cookie cookie = new Cookie("accessToken", accessToken);
