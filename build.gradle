@@ -63,9 +63,6 @@ dependencies {
 	//firebase
 	implementation 'com.google.firebase:firebase-admin:9.4.2'
 
-	// mySQL
-	implementation 'mysql:mysql-connector-java'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {
