@@ -49,10 +49,20 @@ public class JwtUtil {
                 .domain("univ-on.com")
                 .maxAge(60 * 60 * 24 * 30)
                 .build();
-//        Cookie cookie = new Cookie("accessToken", accessToken);
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-//        cookie.setMaxAge(60 * 60 * 24 * 30);
+
+        return cookie;
+    }
+
+    public ResponseCookie createLocalCookie(String accessToken) {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .domain("localhost")
+                .maxAge(60 * 60 * 24 * 30)
+                .build();
+
         return cookie;
     }
 

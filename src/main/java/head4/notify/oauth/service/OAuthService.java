@@ -66,7 +66,7 @@ public class OAuthService {
         // 사용자 jwt 토큰 생성하기
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), user.getUnivId(), user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
-        ResponseCookie cookie = jwtUtil.createCookie(accessToken);
+        ResponseCookie cookie = jwtUtil.createLocalCookie(accessToken);
 
         response.addHeader("Set-Cookie", cookie.toString());
         return accessToken;

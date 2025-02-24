@@ -8,6 +8,7 @@ import head4.notify.domain.article.entity.Article;
 import head4.notify.domain.article.entity.University;
 import head4.notify.domain.article.repository.ArticleRepository;
 import head4.notify.domain.article.repository.UniversityRepository;
+import head4.notify.grpc.ArticleRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,6 +65,45 @@ public class ArticleService {
 
         articles = articleRepository.saveAll(articles);
 
+        return articles.stream().map(article -> article.getId()).toList();
+    }
+
+    @Transactional
+    public List<Long> createGrpc(ArticleRequest request) {
+        String univName = request.getSchool();
+
+        // 해당 대학교(캠퍼스 포함) 엔티티 가져오기
+        // 캠퍼스 기준 오름차순 정렬 0 1 2 형식
+        List<University> universities = universityRepository.findUniversitiesByName(univName);
+
+        List<Article> articles = new ArrayList<>();
+        List<head4.notify.grpc.ArticleDetail> articleDetails = request.getArticleDetailsList();
+
+        for (head4.notify.grpc.ArticleDetail detail : articleDetails) {
+
+            if(universities.size() > 1 && detail.getCampus() == 0) {
+                if(checkDuplicate(detail.getArticleNum(), universities.get(1).getId())) continue;
+
+                for(int i = 1; i < universities.size(); i++) {
+                    articles.add(new Article(
+                            universities.get(i).getId(),
+                            detail.getTitle(),
+                            detail.getArticleUrl(),
+                            detail.getArticleNum()));
+                }
+            }
+            else {
+                if(checkDuplicate(detail.getArticleNum(), universities.get(detail.getCampus()).getId())) continue;
+
+                articles.add(new Article(
+                        universities.get(detail.getCampus()).getId(),
+                        detail.getTitle(),
+                        detail.getArticleUrl(),
+                        detail.getArticleNum()));
+            }
+        }
+
+        articles = articleRepository.saveAll(articles);
         return articles.stream().map(article -> article.getId()).toList();
     }
 

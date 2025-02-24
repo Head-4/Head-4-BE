@@ -138,4 +138,15 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<String> deleteKeyword(Long notifyId, CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[사용자] fcm 토큰 보유 확인", description = "사용자가 fcm 토큰을 보유하고 있는지 확인하는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "true(토큰 보유) | false(토큰 없음)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class, examples = "true"))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<Boolean> checkFcmToken(CustomUserDetails userDetails);
 }

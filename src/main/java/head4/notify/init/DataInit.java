@@ -67,12 +67,12 @@ public class DataInit {
 
         // 알림 추가
         String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
-        notifyService.create(users.get(0).getId(), "장학");
-//        for (String keyword : keywords) {
-//            users.forEach(user -> {
-//                notifyService.create(user.getId(), keyword);
-//            });
-//        }
+        //notifyService.create(users.get(0).getId(), "장학");
+        for (String keyword : keywords) {
+            users.forEach(user -> {
+                notifyService.create(user.getId(), keyword);
+            });
+        }
 
 
 

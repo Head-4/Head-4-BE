@@ -104,9 +104,27 @@ public class NotifyService {
         }
     }
 
+    public void sendPushMessage2(List<PushMessage> pushMessages) {
+        // TODO: sendAll 은 최대 500개의 메세지 처리 가능
+
+        for (PushMessage pushMessage : pushMessages) {
+            Message message = Message.builder()
+                    .setNotification(Notification.builder()
+                            .setTitle(pushMessage.getKeyword() + " 새로운 공지")
+                            .setBody(pushMessage.getTitle())
+                            .build()
+                    )
+                    .putData("url", pushMessage.getUrl())
+                    .setToken(pushMessage.getFcmToken())
+                    .build();
+            FirebaseMessaging.getInstance().sendAsync(message, true);
+        }
+
+    }
+
     private void sendFirebase(List<Message> messages) {
         try {
-            ApiFuture<BatchResponse> future = FirebaseMessaging.getInstance().sendEachAsync(messages);
+            ApiFuture<BatchResponse> future = FirebaseMessaging.getInstance().sendEachAsync(messages, true);
             BatchResponse batchResponse = future.get();
 
             List<Message> failedMessages = new ArrayList<>();
@@ -123,9 +141,36 @@ public class NotifyService {
             }
 
             if(!failedMessages.isEmpty()) {
-                FirebaseMessaging.getInstance().sendEachAsync(failedMessages);
+                FirebaseMessaging.getInstance().sendEachAsync(failedMessages, true);
             }
         } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            throw new CustomException(ErrorCode.FIREBASE_MESSAGE_SEND_ERROR);
+        }
+    }
+
+    private void sendFirebase2(List<Message> messages) {
+        System.out.println("sendEach");
+        try {
+            BatchResponse batchResponse = FirebaseMessaging.getInstance().sendEach(messages, true);
+
+            List<Message> failedMessages = new ArrayList<>();
+
+            for(int i = 0; i < batchResponse.getResponses().size(); i++) {
+                SendResponse sendResponse = batchResponse.getResponses().get(i);
+
+                if(!sendResponse.isSuccessful()) {
+                    failedMessages.add(messages.get(i));
+                    log.error("Failed to send message: {} - Error: {}",
+                            messages.get(i).toString(),
+                            sendResponse.getException().getMessage());
+                }
+            }
+
+            if(!failedMessages.isEmpty()) {
+                FirebaseMessaging.getInstance().sendEach(failedMessages, true);
+            }
+        } catch (FirebaseMessagingException e) {
             e.printStackTrace();
             throw new CustomException(ErrorCode.FIREBASE_MESSAGE_SEND_ERROR);
         }

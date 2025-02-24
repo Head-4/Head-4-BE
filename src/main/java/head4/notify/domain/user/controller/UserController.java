@@ -96,6 +96,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok("success");
     }
 
+    // TODO: fcm 토큰 확인
+    @GetMapping("/check/fcm/token")
+    public BaseResponse<Boolean> checkFcmToken(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return BaseResponse.ok(userService.checkFcmToken(userDetails.getUserId()));
+    }
+
     @GetMapping("/healthy")
     public String healthy() {
         return "success";

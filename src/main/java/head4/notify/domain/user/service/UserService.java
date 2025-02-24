@@ -108,4 +108,9 @@ public class UserService {
 
         userNotifyRepository.delete(userNotify);
     }
+
+    public Boolean checkFcmToken(Long userId) {
+        User user = getUserById(userId);
+        return user.getFcmToken() != null;
+    }
 }
