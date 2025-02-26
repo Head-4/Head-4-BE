@@ -4,6 +4,7 @@ import head4.notify.domain.user.dto.UserKeywordsRes;
 import head4.notify.domain.user.entity.UserNotify;
 import head4.notify.domain.user.entity.embedded.UserNotifyId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,4 +30,9 @@ public interface UserNotifyRepository extends JpaRepository<UserNotify, UserNoti
             "and un.userNotifyId.notifyId = :notifyId")
     Optional<UserNotify> findByNotifyIdAndUserId(@Param("userId") Long userId,
                                                  @Param("notifyId") Long notifyId);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from UserNotify un " +
+            "where un.userNotifyId.userId = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }

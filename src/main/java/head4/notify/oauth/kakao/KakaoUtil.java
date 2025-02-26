@@ -11,13 +11,19 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import static head4.notify.exceoption.ErrorCode.*;
+
 @Slf4j
 @Component
 public class KakaoUtil {
+    @Value("${kakao.auth.admin}")
+    private String admin;
+
     @Value("${kakao.auth.client}")
     private String client;
 
@@ -55,7 +61,7 @@ public class KakaoUtil {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
             log.info("oAuthToken : {}", oAuthToken.getAccess_token());
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.JSON_PARSING_ERROR);
+            throw new CustomException(JSON_PARSING_ERROR);
         }
 
         return oAuthToken;
@@ -85,9 +91,43 @@ public class KakaoUtil {
             userInfo = objectMapper.readValue(response.getBody(), KakaoDto.UserInfo.class);
             log.info(userInfo.getKakao_account().getEmail());
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.JSON_PARSING_ERROR);
+            throw new CustomException(JSON_PARSING_ERROR);
         }
 
         return userInfo;
+    }
+
+    public void kakaoUnlink(Long targetId) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", CONTENT_TYPE);
+        headers.add("Authorization", "KakaoAK " + admin);
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", targetId.toString());
+
+        HttpEntity<LinkedMultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(params, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://kapi.kakao.com/v1/user/unlink",
+                HttpMethod.POST,
+                kakaoRequest,
+                String.class);
+        System.out.println("response = " + response.getBody());
+
+        KakaoDto.UnlinkInfo unlinkInfo = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            unlinkInfo = objectMapper.readValue(response.getBody(), KakaoDto.UnlinkInfo.class);
+            log.info(unlinkInfo.getId().toString());
+        } catch (Exception e) {
+            throw new CustomException(JSON_PARSING_ERROR);
+        }
+
+        if(!unlinkInfo.getId().equals(targetId)) {
+            throw new CustomException(KAKAO_UNLINK_ERROR);
+        }
     }
 }

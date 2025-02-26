@@ -6,6 +6,7 @@ import head4.notify.domain.user.entity.PushDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,4 +27,9 @@ public interface PushDetailRepository extends JpaRepository<PushDetail, Long> {
     countQuery = "select count(pd) from PushDetail pd " +
             "where pd.userId = :userId and pd.id < :cursor")
     Page<PushLog> getPushDetailPage(@Param("cursor") Long cursor, @Param("userId") Long userId, Pageable pageable);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("delete from PushDetail pd " +
+            "where pd.userId = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }

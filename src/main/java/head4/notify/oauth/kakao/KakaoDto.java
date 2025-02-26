@@ -29,4 +29,9 @@ public class KakaoDto {
             private String email;
         }
     }
+
+    @Getter
+    public static class UnlinkInfo {
+        private Long id;
+    }
 }

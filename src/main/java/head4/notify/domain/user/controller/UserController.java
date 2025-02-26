@@ -102,6 +102,12 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.checkFcmToken(userDetails.getUserId()));
     }
 
+    // TODO: 사용자 탈퇴
+    @DeleteMapping("/withdrawal")
+    public BaseResponse<Boolean> withdrawal(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return BaseResponse.ok(userService.withdrawal(userDetails.getUserId()));
+    }
+
     @GetMapping("/healthy")
     public String healthy() {
         return "success";

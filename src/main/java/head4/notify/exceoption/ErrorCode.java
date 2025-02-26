@@ -27,6 +27,7 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(50000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     // JSON 파싱 오류
     JSON_PARSING_ERROR(50010, HttpStatus.INTERNAL_SERVER_ERROR, "JSON 파싱 오류입니다."),
+    KAKAO_UNLINK_ERROR(50030, HttpStatus.INTERNAL_SERVER_ERROR, "Kakao 연결 끊기 오류입니다."),
     // firebase 초기화 오류
     FIREBASE_CONFIG_ERROR(50090, HttpStatus.INTERNAL_SERVER_ERROR, "firebase 초기화 오류입니다."),
     // firebase message 생성 오류
