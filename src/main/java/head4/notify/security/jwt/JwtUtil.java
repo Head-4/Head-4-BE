@@ -53,6 +53,18 @@ public class JwtUtil {
         return cookie;
     }
 
+    public ResponseCookie deleteCookie() {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .sameSite("Strict")
+                .httpOnly(true)
+                .secure(true)
+                .domain("univ-on.com")
+                .maxAge(0)
+                .build();
+        return cookie;
+    }
+
     public ResponseCookie createLocalCookie(String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .path("/")

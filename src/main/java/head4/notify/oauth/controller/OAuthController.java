@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/login")
-public class LoginController {
+public class OAuthController {
     private final KakaoUtil kakaoUtil;
     private final OAuthService oAuthService;
 
@@ -21,6 +21,11 @@ public class LoginController {
     public BaseResponse<Boolean> kakaoLogin(@PathVariable(value = "code") String code,
                                          HttpServletResponse response) {
         return BaseResponse.ok(oAuthService.kakaoOAuthLogin(code, response));
+    }
+
+    @PostMapping("/kakao/logout")
+    public BaseResponse<String> kakaoLogout(HttpServletResponse response) {
+        return BaseResponse.ok(oAuthService.logout(response));
     }
 
     @PostMapping("/test")

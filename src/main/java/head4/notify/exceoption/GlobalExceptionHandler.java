@@ -5,11 +5,10 @@ import head4.notify.discord.DiscordSender;
 import head4.notify.domain.article.controller.ArticleController;
 import head4.notify.domain.notification.controller.NotifyController;
 import head4.notify.domain.user.controller.UserController;
-import head4.notify.oauth.controller.LoginController;
+import head4.notify.oauth.controller.OAuthController;
 import head4.notify.security.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,16 +16,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 @Slf4j
 @RestControllerAdvice(
         annotations = {RestController.class},
         basePackageClasses = {
-                LoginController.class,
+                OAuthController.class,
                 ArticleController.class,
                 NotifyController.class,
                 UserController.class,

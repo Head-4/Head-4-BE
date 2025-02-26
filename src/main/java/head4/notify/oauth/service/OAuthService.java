@@ -59,6 +59,12 @@ public class OAuthService {
         return newUser;
     }
 
+    public String logout(HttpServletResponse response) {
+        ResponseCookie cookie = jwtUtil.deleteCookie();
+        response.addHeader("Set-Cookie", cookie.toString());
+        return "success";
+    }
+
     public String user1Login(HttpServletResponse response) {
         User user = userRepository.findById(1L)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
