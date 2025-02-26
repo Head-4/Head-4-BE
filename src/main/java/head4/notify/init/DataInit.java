@@ -48,10 +48,10 @@ public class DataInit {
         List<User> users = new ArrayList<>();
 
         for(int i = 1; i <= 5; i++) {
-            users.add(new User("상명천안" + i, RoleType.ROLE_USER));
+            users.add(new User(1L,"상명천안" + i, RoleType.ROLE_USER));
         }
         for (String email : emails) {
-            users.add(new User(email, RoleType.ROLE_USER));
+            users.add(new User(1L, email, RoleType.ROLE_USER));
         }
 
         int size = users.size() - emails.length;

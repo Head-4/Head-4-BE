@@ -18,6 +18,8 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private Long kakaoId;
+
     @Column(name = "univ_id")
     private Integer univId;
 
@@ -32,7 +34,8 @@ public class User {
 
     private Boolean notifyAllow;
 
-    public User(String email, RoleType roleType) {
+    public User(Long kakaoId, String email, RoleType roleType) {
+        this.kakaoId = kakaoId;
         this.email = email;
         this.roleType = roleType;
         this.fcmToken = null;

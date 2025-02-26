@@ -34,6 +34,7 @@ public class OAuthService {
         KakaoDto.UserInfo userInfo = kakaoUtil.getUserInfo(oAuthToken.getAccess_token());
 
         Boolean newUser = false;
+        Long kakaoId = userInfo.getId();
         String kakaoEmail = userInfo.getKakao_account().getEmail();
 
         // 해당 이메일로 가임된 유저인지 확인
@@ -43,7 +44,7 @@ public class OAuthService {
         Optional<User> optionalUser = userRepository.findByEmail(kakaoEmail);
 
         if(!optionalUser.isPresent()) {
-            user = join(kakaoEmail);
+            user = join(kakaoId, kakaoEmail);
             newUser = true;
         } else {
             user = optionalUser.get();
@@ -79,8 +80,8 @@ public class OAuthService {
     }
 
     // 가입이 안된 사용자 회원가입 기능
-    private User join(String email) {
-        User user = new User(email, RoleType.ROLE_USER);
+    private User join(Long kakaoId, String email) {
+        User user = new User(kakaoId, email, RoleType.ROLE_USER);
         return userRepository.save(user);
     }
 }

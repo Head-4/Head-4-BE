@@ -21,8 +21,8 @@ public class KakaoUtil {
     @Value("${kakao.auth.client}")
     private String client;
 
-    @Value("${kakao.auth.redirect_uri}")
-    private String redirect_uri;
+    //@Value("${kakao.auth.redirect_uri}")
+    private String redirect_uri = "http://localhost:3000/kakao/callback";
 
     private final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
     private final String GRANT_TYPE = "authorization_code";
