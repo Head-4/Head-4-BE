@@ -149,4 +149,15 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
     public BaseResponse<Boolean> checkFcmToken(CustomUserDetails userDetails);
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @Operation(summary = "[사용자] 탈퇴", description = "사용자의 모든 정보를 삭제하고 카카오 연동을 끊는 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "true(탈퇴 성공) | false(탈퇴 실패)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Boolean.class, examples = "true"))),
+            @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
+    })
+    public BaseResponse<Boolean> withdrawal(CustomUserDetails userDetails);
 }
