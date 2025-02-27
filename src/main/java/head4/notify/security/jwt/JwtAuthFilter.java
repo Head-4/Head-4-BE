@@ -33,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * JWT 검증, 유효하다면 UserDetailService 의 loadByUserName 으로 해당 유저가 데이터베이스에 존재하는지 판단
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
         String accessToken = null;
         Cookie[] cookies = request.getCookies();
 
@@ -82,14 +82,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throw new CustomException(ErrorCode.JWT_CLAIMS_EMPTY_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new CustomException(ErrorCode.JWT_FILTER_ERROR);
+            throw new RuntimeException(e);
         }
     }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/swagger-ui/index.html"};
-        String path = request.getRequestURI();
-        return Arrays.stream(excludePath).anyMatch(path::startsWith);
-    }
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        String[] excludePath = {"/swagger-ui/index.html"};
+//        String path = request.getRequestURI();
+//        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+//    }
 }
