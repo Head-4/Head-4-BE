@@ -52,6 +52,13 @@ public class SecurityConfig {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
+        // 권한 규칙 작성
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(AUTH_WHITELIST).permitAll()
+                //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
+                .anyRequest().permitAll()
+        );
+
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
         http
                 .addFilterBefore(
@@ -59,14 +66,6 @@ public class SecurityConfig {
                 UsernamePasswordAuthenticationFilter.class
                 )
                 .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
-
-        // 권한 규칙 작성
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-                        .anyRequest().permitAll()
-//                        .anyRequest().authenticated()
-        );
 
         return http.build();
     }

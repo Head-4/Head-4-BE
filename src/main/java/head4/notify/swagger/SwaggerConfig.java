@@ -19,23 +19,39 @@ import java.lang.reflect.Field;
 
 @Configuration
 public class SwaggerConfig {
+//    @Bean
+//    public OpenAPI openAPI() {
+//        String jwt = "Cookie Auth";
+//        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
+//        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
+//                .type(SecurityScheme.Type.APIKEY)
+//                .in(SecurityScheme.In.COOKIE)
+//                .name("accessToken")
+//                //.scheme("cookie")
+//                //.bearerFormat("JWT")
+//        );
+//
+//        return new OpenAPI()
+//                .components(new Components())
+//                .info(apiInfo())
+//                .addSecurityItem(securityRequirement)
+//                .components(components);
+//    }
     @Bean
     public OpenAPI openAPI() {
-        String jwt = "Cookie Auth";
+        String jwt = "Bearer Token";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
         Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
-                .type(SecurityScheme.Type.APIKEY)
-                .in(SecurityScheme.In.COOKIE)
-                .name("accessToken")
-                //.scheme("cookie")
-                //.bearerFormat("JWT")
-        );
+                    .type(SecurityScheme.Type.APIKEY)
+                    .in(SecurityScheme.In.HEADER)
+                    .name("Authorization")
+    );
 
-        return new OpenAPI()
-                .components(new Components())
-                .info(apiInfo())
-                .addSecurityItem(securityRequirement)
-                .components(components);
+    return new OpenAPI()
+            .components(new Components())
+            .info(apiInfo())
+            .addSecurityItem(securityRequirement)
+            .components(components);
     }
     private Info apiInfo() {
         return new Info()
