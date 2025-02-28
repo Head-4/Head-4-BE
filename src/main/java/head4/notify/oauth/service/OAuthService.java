@@ -56,7 +56,7 @@ public class OAuthService {
         ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
         response.addHeader("Set-Cookie", cookie.toString());
-        //response.setHeader("Authorization", accessToken);
+        response.setHeader("Authorization", accessToken);
         return newUser;
     }
 
