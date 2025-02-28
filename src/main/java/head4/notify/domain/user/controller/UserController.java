@@ -108,6 +108,11 @@ public class UserController implements UserControllerDocs {
         return BaseResponse.ok(userService.withdrawal(userDetails.getUserId()));
     }
 
+    @GetMapping("/validate")
+    public BaseResponse<String> validation(@CookieValue(required = false, value = "accessToken") String accessToken) {
+        return BaseResponse.ok(userService.validateCookie(accessToken));
+    }
+
     @GetMapping("/healthy")
     public String healthy() {
         return "success";

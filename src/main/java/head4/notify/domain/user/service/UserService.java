@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static head4.notify.exceoption.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -47,7 +49,7 @@ public class UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
     }
 
     public String getEmail(Long userId) {
@@ -110,7 +112,7 @@ public class UserService {
     @Transactional
     public void deleteKeyword(Long userId, Long notifyId) {
         UserNotify userNotify = userNotifyRepository.findByNotifyIdAndUserId(userId, notifyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.KEYWORD_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(KEYWORD_NOT_FOUND));
 
         userNotifyRepository.delete(userNotify);
     }
@@ -134,5 +136,13 @@ public class UserService {
 
         userRepository.delete(user);
         return true;
+    }
+
+    public String validateCookie(String accessToken) {
+        if(accessToken == null || !jwtUtil.validateToken(accessToken)) {
+            throw new CustomException(JWT_EXPIRED_TOKEN_ERROR);
+        }
+
+        return accessToken;
     }
 }
