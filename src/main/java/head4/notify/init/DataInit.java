@@ -28,7 +28,7 @@ public class DataInit {
 
     private final NotifyRepository notifyRepository;
 
-    //@PostConstruct
+    @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         // 대학교 생성
@@ -44,35 +44,35 @@ public class DataInit {
         universities = universityRepository.saveAll(universities);
 
         // 사용자 생성
-        String[] emails = {"상명이", "백석이", "나사렛"};
-        List<User> users = new ArrayList<>();
-
-        for(int i = 1; i <= 5; i++) {
-            users.add(new User(1L,"상명천안" + i, RoleType.ROLE_USER));
-        }
-        for (String email : emails) {
-            users.add(new User(1L, email, RoleType.ROLE_USER));
-        }
-
-        int size = users.size() - emails.length;
-
-        for(int i = 0; i < size; i++) {
-            users.get(i).setUnivId(universities.get(0).getId());
-        }
-        for(int i = size; i < users.size(); i++) {
-            users.get(i).setUnivId(universities.get(i - size + 2).getId());
-        }
-
-        users = userRepository.saveAll(users);
-
-        // 알림 추가
-        String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
-        //notifyService.create(users.get(0).getId(), "장학");
-        for (String keyword : keywords) {
-            users.forEach(user -> {
-                notifyService.create(user.getId(), keyword);
-            });
-        }
+//        String[] emails = {"상명이", "백석이", "나사렛"};
+//        List<User> users = new ArrayList<>();
+//
+//        for(int i = 1; i <= 5; i++) {
+//            users.add(new User(1L,"상명천안" + i, RoleType.ROLE_USER));
+//        }
+//        for (String email : emails) {
+//            users.add(new User(1L, email, RoleType.ROLE_USER));
+//        }
+//
+//        int size = users.size() - emails.length;
+//
+//        for(int i = 0; i < size; i++) {
+//            users.get(i).setUnivId(universities.get(0).getId());
+//        }
+//        for(int i = size; i < users.size(); i++) {
+//            users.get(i).setUnivId(universities.get(i - size + 2).getId());
+//        }
+//
+//        users = userRepository.saveAll(users);
+//
+//        // 알림 추가
+//        String[] keywords = {"장학", "근로", "취업", "실습", "수상"};
+//        //notifyService.create(users.get(0).getId(), "장학");
+//        for (String keyword : keywords) {
+//            users.forEach(user -> {
+//                notifyService.create(user.getId(), keyword);
+//            });
+//        }
 
 
 
