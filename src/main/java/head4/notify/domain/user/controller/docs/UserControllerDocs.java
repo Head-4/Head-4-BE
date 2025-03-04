@@ -159,5 +159,5 @@ public interface UserControllerDocs {
                             schema = @Schema(implementation = Boolean.class, examples = "true"))),
             @ApiResponse(responseCode = "40401", description = "사용자 찾기 실패", content = @Content(schema =  @Schema(implementation = ErrorCode.class)))
     })
-    public BaseResponse<Boolean> withdrawal(CustomUserDetails userDetails);
+    public BaseResponse<Boolean> withdrawal(CustomUserDetails userDetails, HttpServletResponse response);
 }

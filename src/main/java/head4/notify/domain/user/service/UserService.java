@@ -123,8 +123,8 @@ public class UserService {
         return user.getFcmToken() != null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Boolean withdrawal(Long userId) {
+    @Transactional
+    public Boolean withdrawal(Long userId, HttpServletResponse response) {
         // 등록한 키워드 삭제
         userNotifyRepository.deleteByUserId(userId);
 
@@ -136,6 +136,9 @@ public class UserService {
         kakaoUtil.kakaoUnlink(user.getKakaoId());
 
         userRepository.delete(user);
+
+        ResponseCookie cookie = jwtUtil.deleteCookie();
+        response.addHeader("Set-Cookie", cookie.toString());
         return true;
     }
 

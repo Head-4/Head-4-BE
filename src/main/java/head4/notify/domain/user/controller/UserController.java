@@ -104,8 +104,10 @@ public class UserController implements UserControllerDocs {
 
     // TODO: 사용자 탈퇴
     @DeleteMapping("/withdrawal")
-    public BaseResponse<Boolean> withdrawal(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return BaseResponse.ok(userService.withdrawal(userDetails.getUserId()));
+    public BaseResponse<Boolean> withdrawal(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletResponse response) {
+        return BaseResponse.ok(userService.withdrawal(userDetails.getUserId(), response));
     }
 
     @GetMapping("/validate")

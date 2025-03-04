@@ -28,7 +28,7 @@ public class DataInit {
 
     private final NotifyRepository notifyRepository;
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         // 대학교 생성

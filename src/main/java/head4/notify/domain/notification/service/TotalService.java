@@ -28,8 +28,6 @@ public class TotalService {
 
     private final PushDetailJdbcRepository pushDetailJdbcRepository;
 
-    private final NotifyArticleRepository notifyArticleRepository;
-
     public List<PushMessage> createTotal(CreateArticleRequest request) {
         StopWatch stopWatch = new StopWatch();
 
@@ -52,35 +50,5 @@ public class TotalService {
         // 푸시 알림 저장
         pushDetailJdbcRepository.batchSave(pushMessages);
         return pushMessages;
-    }
-
-    public void createTotal2(CreateArticleRequest request) {
-        StopWatch stopWatch = new StopWatch();
-
-        // 크롤링한 공지 엔티티로 변환 후 저장, 식별자 받아오기
-        stopWatch.start();
-        //List<Long> articleIds = articleService.create(request);
-
-        // 크롤링한 공지중에서 해당 학교 키워드와 매칭되는 알림 객체 식별자 조회
-        //List<PushMessage> pushMessages = notifyService.matchNotify(articleIds);
-
-        List<ArticleDetail> articles = request.getArticleDetails();
-        List<University> universities = articleService.create2(request);
-
-        for (University university : universities) {
-            // 해당 대학 알림 조회
-        }
-
-        // 푸시 알림 전송 한 개당 150~200ms
-        //notifyService.sendPushMessage(pushMessages);
-
-        // 푸시 알림 저장
-        //pushDetailJdbcRepository.batchSave(pushMessages);
-
-        stopWatch.stop();
-
-        //log.info("알림 개수: {}  조회 시간: {}ms", pushMessages.size(), stopWatch.getTotalTimeMillis());
-
-        //return pushMessages;
     }
 }
