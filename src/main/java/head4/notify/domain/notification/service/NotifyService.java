@@ -81,11 +81,11 @@ public class NotifyService {
         for (PushMessage pushMessage : pushMessages) {
             messages.add(
                     Message.builder()
-                            .setNotification(Notification.builder()
-                                    .setTitle("\'" + pushMessage.getKeyword() + "\'" + " 새로운 공지")
-                                    .setBody(pushMessage.getTitle())
-                                    .build()
-                            )
+                            .setWebpushConfig(WebpushConfig.builder()
+                                    .putHeader("Urgency", "high")
+                                    .build())
+                            .putData("title", "\'" + pushMessage.getKeyword() + "\'" + " 새로운 공지")
+                            .putData("body", pushMessage.getTitle())
                             .putData("url", pushMessage.getUrl())
                             .setToken(pushMessage.getFcmToken())
                             .build()

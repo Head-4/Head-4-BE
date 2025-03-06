@@ -39,7 +39,7 @@ public class User {
         this.email = email;
         this.roleType = roleType;
         this.fcmToken = null;
-        this.notifyAllow = true;
+        this.notifyAllow = false;
     }
 
     public void setUnivId(Integer univId) {
