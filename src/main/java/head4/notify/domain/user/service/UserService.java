@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static head4.notify.exceoption.ErrorCode.*;
@@ -73,13 +74,33 @@ public class UserService {
         User user = getUserById(userId);
         Integer univId = universityService.getUnivId(univName);
 
+        user.setUnivId(univId);
+
+        // 키워드를 해당 대학에 등록하기
+        List<String> keywords = userNotifyRepository.findKeywords(userId);
+        List<UserNotify> userNotifies = new ArrayList<>();
+
+        for (String keyword : keywords) {
+            Notify notify = notifyRepository.findNotifyByUnivIdAndKeyword(univId, keyword)
+                    .orElseGet(() -> notifyRepository.save(new Notify(univId, keyword)));
+
+            UserNotifyId userNotifyId = new UserNotifyId(userId, notify.getId());
+            userNotifies.add(new UserNotify(userNotifyId));
+        }
+
+        // 이전 대학에 등록한 키워드 삭제
+        userNotifyRepository.deleteByUserId(userId);
+
+        // 변경된 대학교의 키워드로 등록
+        if(!userNotifies.isEmpty()) {
+            userNotifyRepository.saveAll(userNotifies);
+        }
+
         CustomUserInfoDto customUserInfoDto = new CustomUserInfoDto(user.getId(), univId, user.getEmail(), user.getRoleType());
         String accessToken = jwtUtil.createAccessToken(customUserInfoDto);
         ResponseCookie cookie = jwtUtil.createCookie(accessToken);
 
         response.addHeader("Set-Cookie", cookie.toString());
-
-        user.setUnivId(univId);
     }
 
     @Transactional

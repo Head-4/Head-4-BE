@@ -25,11 +25,17 @@ public interface UserNotifyRepository extends JpaRepository<UserNotify, UserNoti
             "where un.userNotifyId.userId = :userId")
     List<UserKeywordsRes> findUserKeywords(@Param("userId") Long userId);
 
+    @Query("select n.keyword from UserNotify un " +
+            "left join Notify n on un.userNotifyId.notifyId = n.id " +
+            "where un.userNotifyId.userId = :userId")
+    List<String> findKeywords(@Param("userId") Long userId);
+
     @Query("select un from UserNotify un " +
             "where un.userNotifyId.userId = :userId " +
             "and un.userNotifyId.notifyId = :notifyId")
     Optional<UserNotify> findByNotifyIdAndUserId(@Param("userId") Long userId,
                                                  @Param("notifyId") Long notifyId);
+
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("delete from UserNotify un " +

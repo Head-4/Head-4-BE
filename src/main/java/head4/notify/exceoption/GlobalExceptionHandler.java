@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     // 기본 예외
     @ExceptionHandler(value = {Exception.class})
     public BaseResponse<?> handleException(Exception e, WebRequest request) {
-        discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
+        //discordSender.sendWebhookMessage(e.toString(), e.getMessage(), request);
         log.error("handleException() in GlobalExceptionHandler throw Exception : {}", e.getMessage());
         e.printStackTrace();
         return BaseResponse.fail(new CustomException(ErrorCode.INTERNAL_SERVER_ERROR));
